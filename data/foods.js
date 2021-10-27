@@ -4,6 +4,33 @@ const mongoCollections = require('../config/mongoCollections');
 const foods = mongoCollections.foods;
 
 let exportedMethods = {
+    async getAll() {
+        const foodCollection = await foods();
+        const foodList = await foodCollection.find({}).toArray();
+        for(let food of foodList) {
+            food._id = food._id.toString();
+            for(let comment of food.comments) {
+                comment._id = comment._id.toString();
+            }
+        }
+        return foodList;
+    },
+
+    async get(id) {
+        if(!id || typeof id !== 'string' || id.trim() === '') {
+            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
+        }
+        let parsedId = ObjectId(id);
+        const foodCollection = await foods();
+        const food = await foodCollection.findOne({_id: parsedId});
+        if(food === null) throw new Error('No food with that id.');
+        food._id = food._id.toString();
+        for(let comment of food.comments) {
+            comment._id = comment._id.toString();
+        }
+        return food;
+    },
+
     async create(name, servingSizeNumber, servingSizeUnitSingular, servingSizeUnitPlural, calories, fat, carbs, protein) {
         if(!name || typeof name !== 'string' || name.trim() === '') {
             throw new Error('Parameter 1 [name] must be a non-empty string containing more than just spaces.');
@@ -45,45 +72,6 @@ let exportedMethods = {
         if(insertInfo.insertedCount === 0) throw new Error('Could not add food.');
         const newId = insertInfo.insertedId;
         return await this.get(newId.toString());
-    },
-
-    async getAll() {
-        const foodCollection = await foods();
-        const foodList = await foodCollection.find({}).toArray();
-        for(let food of foodList) {
-            food._id = food._id.toString();
-            for(let comment of food.comments) {
-                comment._id = comment._id.toString();
-            }
-        }
-        return foodList;
-    },
-
-    async get(id) {
-        if(!id || typeof id !== 'string' || id.trim() === '') {
-            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
-        }
-        let parsedId = ObjectId(id);
-        const foodCollection = await foods();
-        const food = await foodCollection.findOne({_id: parsedId});
-        if(food === null) throw new Error('No food with that id.');
-        food._id = food._id.toString();
-        for(let comment of food.comments) {
-            comment._id = comment._id.toString();
-        }
-        return food;
-    },
-
-    async remove(id) {
-        if(!id || typeof id !== 'string' || id.trim() === '') {
-            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
-        }
-        let parsedId = ObjectId(id);
-        const foodCollection = await foods();
-        await this.get(id);
-        const deletionInfo = await foodCollection.deleteOne({_id: parsedId});
-        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete food.');
-        return {'foodId': id, 'deleted': true};
     },
 
     async update(id, name, servingSizeNumber, servingSizeUnitSingular, servingSizeUnitPlural, calories, fat, carbs, protein) {
@@ -129,6 +117,18 @@ let exportedMethods = {
         const updateInfo = await foodCollection.updateOne({_id: parsedId}, {$set: updatedFood});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update food successfully.');
         return await this.get(id);
+    },
+
+    async remove(id) {
+        if(!id || typeof id !== 'string' || id.trim() === '') {
+            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
+        }
+        let parsedId = ObjectId(id);
+        const foodCollection = await foods();
+        await this.get(id);
+        const deletionInfo = await foodCollection.deleteOne({_id: parsedId});
+        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete food.');
+        return {'foodId': id, 'deleted': true};
     }
 };
 
