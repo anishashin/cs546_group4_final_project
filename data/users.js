@@ -61,6 +61,7 @@ let exportedMethods = {
             firstName: firstName,
             lastName: lastName,
             username: username.toLowerCase(),
+            isAdmin: false,
             hashedPassword: hash,
             savedPlates: [],
             comments: []
