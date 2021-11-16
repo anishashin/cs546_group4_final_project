@@ -1,8 +1,10 @@
-// TO DO: hash password, create regex for username, create regex for unhashedPassword
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
+
+const bcrypt = require('bcrypt');
+const saltRounds = 16;
 
 let exportedMethods = {
     async getAll() {
@@ -38,73 +40,35 @@ let exportedMethods = {
         return user;
     },
 
-    async create(firstName, lastName, username, unhashedPassword) {
+    async create(firstName, lastName, username, password) {
         if(!firstName || typeof firstName !== 'string' || firstName.trim() === '') {
             throw new Error('Parameter 1 [firstName] must be a non-empty string containing more than just spaces.');
         }
         if(!lastName || typeof lastName !== 'string' || lastName.trim() === '') {
             throw new Error('Parameter 2 [lastName] must be a non-empty string containing more than just spaces.');
         }
-        if(!username || typeof username !== 'string' || username.trim() === '') {
-            throw new Error('Parameter 3 [username] must be a non-empty string containing more than just spaces.');
+        if(!username || typeof username !== 'string' || !username.match(/^[a-zA-Z0-9]{4,}$/)) {
+            throw new Error('Parameter 3 [username] must be at least 4 characters long and only contain alphanumeric characters.');
         }
-        if(!unhashedPassword || typeof unhashedPassword !== 'string' || unhashedPassword.trim() === '') {
-            throw new Error('Parameter 4 [unhashedPassword] must be a non-empty string containing more than just spaces.');
+        if(!password || typeof password !== 'string' || !password.match(/^[^\s]{6,}$/)) {
+            throw new Error('Parameter 4 [password] must be at least 6 characters long and cannot contain spaces.');
         }
         const userCollection = await users();
+        const user = await userCollection.findOne({username: username.toLowerCase()});
+        if(user !== null) throw new Error('There is already a user with that username.');
+        const hash = await bcrypt.hash(password, saltRounds);
         const newUser = {
             firstName: firstName,
             lastName: lastName,
-            username: username,
-            hashedPassword: unhashedPassword,
+            username: username.toLowerCase(),
+            hashedPassword: hash,
             savedPlates: [],
             comments: []
         };
         const insertInfo = await userCollection.insertOne(newUser);
-        if(insertInfo.insertedCount === 0) throw new Error('Could not add user.');
+        if(insertInfo.insertedCount === 0) throw new Error('Could not create user.');
         const newId = insertInfo.insertedId;
         return await this.get(newId.toString());
-    },
-
-    async update(id, firstName, lastName, username, unhashedPassword) {
-        if(!id || typeof id !== 'string' || id.trim() === '') {
-            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
-        }
-        if(!firstName || typeof firstName !== 'string' || firstName.trim() === '') {
-            throw new Error('Parameter 2 [firstName] must be a non-empty string containing more than just spaces.');
-        }
-        if(!lastName || typeof lastName !== 'string' || lastName.trim() === '') {
-            throw new Error('Parameter 3 [lastName] must be a non-empty string containing more than just spaces.');
-        }
-        if(!username || typeof username !== 'string' || username.trim() === '') {
-            throw new Error('Parameter 4 [username] must be a non-empty string containing more than just spaces.');
-        }
-        if(!unhashedPassword || typeof unhashedPassword !== 'string' || unhashedPassword.trim() === '') {
-            throw new Error('Parameter 5 [unhashedPassword] must be a non-empty string containing more than just spaces.');
-        }
-        let parsedId = ObjectId(id);
-        const userCollection = await users();
-        const updatedUser = {
-            firstName: firstName,
-            lastName: lastName,
-            username: username,
-            hashedPassword: unhashedPassword
-        };
-        const updateInfo = await userCollection.updateOne({_id: parsedId}, {$set: updatedUser});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update user successfully.');
-        return await this.get(id);
-    },
-
-    async remove(id) {
-        if(!id || typeof id !== 'string' || id.trim() === '') {
-            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
-        }
-        let parsedId = ObjectId(id);
-        const userCollection = await users();
-        await this.get(id);
-        const deletionInfo = await userCollection.deleteOne({_id: parsedId});
-        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete user.');
-        return {'userId': id, 'deleted': true};
     }
 };
 
