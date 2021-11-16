@@ -1,7 +1,9 @@
+// TO DO: update saved plates when a food is deleted or edited
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
 const foods = mongoCollections.foods;
+const comments = mongoCollections.comments;
 
 let exportedMethods = {
     async getAll() {
@@ -115,7 +117,7 @@ let exportedMethods = {
             protein: protein
         };
         const updateInfo = await foodCollection.updateOne({_id: parsedId}, {$set: updatedFood});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update food successfully.');
+        if(updateInfo.modifiedCount === 0) throw new Error('Could not update food.');
         return await this.get(id);
     },
 
@@ -123,11 +125,16 @@ let exportedMethods = {
         if(!id || typeof id !== 'string' || id.trim() === '') {
             throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
         }
-        let parsedId = ObjectId(id);
+        let parsedFoodId = ObjectId(id);
         const foodCollection = await foods();
-        await this.get(id);
-        const deletionInfo = await foodCollection.deleteOne({_id: parsedId});
-        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete food.');
+        const food = await this.get(id);
+
+        const commentCollection = await comments();
+        const deleteInfo = await commentCollection.deleteMany({foodId: id});
+        if(deleteInfo.deletedCount !== food.comments.length) throw new Error("Could not delete the food's comments.");
+
+        const deleteInfo2 = await foodCollection.deleteOne({_id: parsedFoodId});
+        if(deleteInfo2.deletedCount === 0) throw new Error('Could not remove food.');
         return {'foodId': id, 'deleted': true};
     }
 };
