@@ -1,4 +1,4 @@
-// TO DO: update saved plates when a food is deleted or edited
+// TO DO: update saved plates when a food is edited/deleted, test comments when a food is edited/deleted
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
@@ -46,16 +46,16 @@ let exportedMethods = {
         if(!servingSizeUnitPlural || typeof servingSizeUnitPlural !== 'string' || servingSizeUnitPlural.trim() === '') {
             throw new Error('Parameter 4 [servingSizeUnitPlural] must be a non-empty string containing more than just spaces.');
         }
-        if(!calories || typeof calories !== 'number' || calories < 0) {
+        if(typeof calories !== 'number' || isNaN(calories) || calories < 0) {
             throw new Error('Parameter 5 [calories] must be a number greater than or equal to 0.');
         }
-        if(!fat || typeof fat !== 'number' || fat < 0) {
+        if(typeof fat !== 'number' || isNaN(fat) || fat < 0) {
             throw new Error('Parameter 6 [fat] must be a number greater than or equal to 0.');
         }
-        if(!carbs || typeof carbs !== 'number' || carbs < 0) {
+        if(typeof carbs !== 'number' || isNaN(carbs) || carbs < 0) {
             throw new Error('Parameter 7 [carbs] must be a number greater than or equal to 0.');
         }
-        if(!protein || typeof protein !== 'number' || protein < 0) {
+        if(typeof protein !== 'number' || isNaN(protein) || protein < 0) {
             throw new Error('Parameter 8 [protein] must be a number greater than or equal to 0.');
         }
         const foodCollection = await foods();
@@ -92,20 +92,21 @@ let exportedMethods = {
         if(!servingSizeUnitPlural || typeof servingSizeUnitPlural !== 'string' || servingSizeUnitPlural.trim() === '') {
             throw new Error('Parameter 5 [servingSizeUnitPlural] must be a non-empty string containing more than just spaces.');
         }
-        if(!calories || typeof calories !== 'number' || calories < 0) {
+        if(typeof calories !== 'number' || isNaN(calories) || calories < 0) {
             throw new Error('Parameter 6 [calories] must be a number greater than or equal to 0.');
         }
-        if(!fat || typeof fat !== 'number' || fat < 0) {
+        if(typeof fat !== 'number' || isNaN(fat) || fat < 0) {
             throw new Error('Parameter 7 [fat] must be a number greater than or equal to 0.');
         }
-        if(!carbs || typeof carbs !== 'number' || carbs < 0) {
+        if(typeof carbs !== 'number' || isNaN(carbs) || carbs < 0) {
             throw new Error('Parameter 8 [carbs] must be a number greater than or equal to 0.');
         }
-        if(!protein || typeof protein !== 'number' || protein < 0) {
+        if(typeof protein !== 'number' || isNaN(protein) || protein < 0) {
             throw new Error('Parameter 9 [protein] must be a number greater than or equal to 0.');
         }
         let parsedId = ObjectId(id);
         const foodCollection = await foods();
+        const food = await this.get(id);
         const updatedFood = {
             name: name,
             servingSizeNumber: servingSizeNumber,
@@ -117,7 +118,7 @@ let exportedMethods = {
             protein: protein
         };
         const updateInfo = await foodCollection.updateOne({_id: parsedId}, {$set: updatedFood});
-        if(updateInfo.modifiedCount === 0) throw new Error('Could not update food.');
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update food.');
         return await this.get(id);
     },
 
