@@ -12,12 +12,6 @@ let exportedMethods = {
         const userList = await userCollection.find({}).toArray();
         for(let user of userList) {
             user._id = user._id.toString();
-            for(let savedPlate of user.savedPlates) {
-                savedPlate._id = savedPlate._id.toString();
-            }
-            for(let comment of user.comments) {
-                comment._id = comment._id.toString();
-            }
         }
         return userList;
     },
@@ -31,12 +25,6 @@ let exportedMethods = {
         const user = await userCollection.findOne({_id: parsedId});
         if(user === null) throw new Error('No user with that id.');
         user._id = user._id.toString();
-        for(let savedPlate of user.savedPlates) {
-            savedPlate._id = savedPlate._id.toString();
-        }
-        for(let comment of user.comments) {
-            comment._id = comment._id.toString();
-        }
         return user;
     },
 
