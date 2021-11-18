@@ -3,7 +3,6 @@ let {ObjectId} = require('mongodb');
 const mongoCollections = require('../config/mongoCollections');
 const savedPlates = mongoCollections.savedPlates;
 const users = mongoCollections.users;
-const foods = mongoCollections.foods;
 const userData = require('./users');
 const foodData = require('./foods');
 
@@ -41,7 +40,7 @@ let exportedMethods = {
         if(!userId || typeof userId !== 'string' || userId.trim() === '') {
             throw new Error('Parameter 1 [userId] must be a non-empty string containing more than just spaces.');
         }
-        await userData.get(userId);
+        const user = await userData.get(userId);
         if(!title || typeof title !== 'string' || title.trim() === '') {
             throw new Error('Parameter 2 [title] must be a non-empty string containing more than just spaces.');
         }
@@ -52,7 +51,7 @@ let exportedMethods = {
             if(!element || typeof element !== 'string' || element.trim() === '') {
                 throw new Error('Parameter 3 [foods] must only contain non-empty string(s) with more than just spaces.')
             }
-            await foodData.get(element);
+            let food = await foodData.get(element);
         });
         if(Array.isArray(servings) === false || servings.length !== foods.length) {
             throw new Error('Parameter 4 [servings] must be an array with the same length as Parameter 3 [foods].');
@@ -84,10 +83,9 @@ let exportedMethods = {
             totalProtein: totalProtein
         };
         const insertInfo = await savedPlateCollection.insertOne(newSavedPlate);
-        if(insertInfo.insertedCount === 0) throw new Error('Could not add saved plate.');
+        if(insertInfo.insertedCount === 0) throw new Error('Could not create saved plate.');
         const newId = insertInfo.insertedId;
         
-        const user = await userData.get(userId);
         let userSavedPlateList = user.savedPlates;
         userSavedPlateList.push(newId.toString());
         let parsedUserId = ObjectId(userId);
@@ -96,7 +94,7 @@ let exportedMethods = {
             savedPlates: userSavedPlateList
         };
         const updateInfo = await userCollection.updateOne({_id: parsedUserId}, {$set: updatedUser});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update user successfully.');
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not create saved plate.');
         
         return await this.get(newId.toString());
     },
@@ -108,7 +106,7 @@ let exportedMethods = {
         if(!userId || typeof userId !== 'string' || userId.trim() === '') {
             throw new Error('Parameter 2 [userId] must be a non-empty string containing more than just spaces.');
         }
-        await userData.get(userId);
+        const user = await userData.get(userId);
         if(!title || typeof title !== 'string' || title.trim() === '') {
             throw new Error('Parameter 3 [title] must be a non-empty string containing more than just spaces.');
         }
@@ -119,7 +117,7 @@ let exportedMethods = {
             if(!element || typeof element !== 'string' || element.trim() === '') {
                 throw new Error('Parameter 4 [foods] must only contain non-empty string(s) with more than just spaces.')
             }
-            await foodData.get(element);
+            let food = await foodData.get(element);
         });
         if(Array.isArray(servings) === false || servings.length !== foods.length) {
             throw new Error('Parameter 5 [servings] must be an array with the same length as Parameter 4 [foods].');
@@ -131,6 +129,7 @@ let exportedMethods = {
         });
         let parsedId = ObjectId(id);
         const savedPlateCollection = await savedPlates();
+        const savedPlate = await this.get(id);
         let totalCalories = 0;
         let totalFat = 0;
         let totalCarbs = 0;
@@ -152,7 +151,7 @@ let exportedMethods = {
             totalProtein: totalProtein
         };
         const updateInfo = await savedPlateCollection.updateOne({_id: parsedId}, {$set: updatedSavedPlate});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update saved plate successfully.');
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update saved plate.');
         return await this.get(id);
     },
 
@@ -162,7 +161,7 @@ let exportedMethods = {
         }
         let parsedSavedPlateId = ObjectId(id);
         const savedPlateCollection = await savedPlates();
-        await this.get(id);
+        const savedPlate = await this.get(id);
 
         const userCollection = await users();
         const user = await userCollection.findOne({'savedPlates._id': parsedSavedPlateId});
@@ -177,10 +176,10 @@ let exportedMethods = {
             }
         }
         const updateInfo = await userCollection.updateOne({_id: user._id}, {$set: updatedUser});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not delete comment.');
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not delete saved plate.');
 
-        const deletionInfo = await savedPlateCollection.deleteOne({_id: parsedId});
-        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete saved plate.');
+        const deleteInfo = await savedPlateCollection.deleteOne({_id: parsedSavedPlateId});
+        if(deleteInfo.deletedCount === 0) throw new Error('Could not delete saved plate.');
         return {'savedPlateId': id, 'deleted': true};
     }
 };
