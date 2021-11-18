@@ -1,3 +1,4 @@
+//TO DO: round numbers
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
@@ -12,10 +13,6 @@ let exportedMethods = {
         const savedPlateList = await savedPlateCollection.find({}).toArray();
         for(let savedPlate of savedPlateList) {
             savedPlate._id = savedPlate._id.toString();
-            savedPlate.userId = savedPlate.userId.toString();
-            for(let food of savedPlate.foods) {
-                food._id = food._id.toString();
-            }
         }
         return savedPlateList;
     },
@@ -29,10 +26,6 @@ let exportedMethods = {
         const savedPlate = await savedPlateCollection.findOne({_id: parsedId});
         if(savedPlate === null) throw new Error('No saved plate with that id.');
         savedPlate._id = savedPlate._id.toString();
-        savedPlate.userId = savedPlate.userId.toString();
-        for(let food of savedPlate.foods) {
-            food._id = food._id.toString();
-        }
         return savedPlate;
     },
 
@@ -47,30 +40,31 @@ let exportedMethods = {
         if(Array.isArray(foods) === false || foods.length === 0) {
             throw new Error('Parameter 3 [foods] must be a non-empty array.');
         }
-        foods.forEach(async (element) => {
-            if(!element || typeof element !== 'string' || element.trim() === '') {
+        for(let i = 0; i < foods.length; i++) {
+            if(!foods[i] || typeof foods[i] !== 'string' || foods[i].trim() === '') {
                 throw new Error('Parameter 3 [foods] must only contain non-empty string(s) with more than just spaces.')
             }
-            let food = await foodData.get(element);
-        });
+            let food = await foodData.get(foods[i]);
+        }
         if(Array.isArray(servings) === false || servings.length !== foods.length) {
             throw new Error('Parameter 4 [servings] must be an array with the same length as Parameter 3 [foods].');
         }
-        servings.forEach((element) => {
-            if(!element || typeof element !== 'number' || element <= 0) {
+        for(let i = 0; i < servings.length; i++) {
+            if(!servings[i] || typeof servings[i] !== 'number' || servings[i] <= 0) {
                 throw new Error('Parameter 4 [servings] must only contain numbers greater than 0.')
             }
-        });
+        }
         const savedPlateCollection = await savedPlates();
         let totalCalories = 0;
         let totalFat = 0;
         let totalCarbs = 0;
         let totalProtein = 0;
         for(let i = 0; i < foods.length; i++) {
-            totalCalories += await foodData.get(foods[i]).calories * servings[i];
-            totalFat += await foodData.get(foods[i]).fat * servings[i];
-            totalCarbs += await foodData.get(foods[i]).carbs * servings[i];
-            totalProtein += await foodData.get(foods[i]).protein * servings[i];
+            let food = await foodData.get(foods[i]);
+            totalCalories += food.calories * servings[i];
+            totalFat += food.fat * servings[i];
+            totalCarbs += food.carbs * servings[i];
+            totalProtein += food.protein * servings[i];
         }
         const newSavedPlate = {
             userId: userId,
@@ -113,20 +107,20 @@ let exportedMethods = {
         if(Array.isArray(foods) === false || foods.length === 0) {
             throw new Error('Parameter 4 [foods] must be a non-empty array.');
         }
-        foods.forEach(async (element) => {
-            if(!element || typeof element !== 'string' || element.trim() === '') {
+        for(let i = 0; i < foods.length; i++) {
+            if(!foods[i] || typeof foods[i] !== 'string' || foods[i].trim() === '') {
                 throw new Error('Parameter 4 [foods] must only contain non-empty string(s) with more than just spaces.')
             }
-            let food = await foodData.get(element);
-        });
+            let food = await foodData.get(foods[i]);
+        }
         if(Array.isArray(servings) === false || servings.length !== foods.length) {
             throw new Error('Parameter 5 [servings] must be an array with the same length as Parameter 4 [foods].');
         }
-        servings.forEach((element) => {
-            if(!element || typeof element !== 'number' || element <= 0) {
+        for(let i = 0; i < servings.length; i++) {
+            if(!servings[i] || typeof servings[i] !== 'number' || servings[i] <= 0) {
                 throw new Error('Parameter 5 [servings] must only contain numbers greater than 0.')
             }
-        });
+        }
         let parsedId = ObjectId(id);
         const savedPlateCollection = await savedPlates();
         const savedPlate = await this.get(id);
@@ -135,10 +129,11 @@ let exportedMethods = {
         let totalCarbs = 0;
         let totalProtein = 0;
         for(let i = 0; i < foods.length; i++) {
-            totalCalories += await foodData.get(foods[i]).calories * servings[i];
-            totalFat += await foodData.get(foods[i]).fat * servings[i];
-            totalCarbs += await foodData.get(foods[i]).carbs * servings[i];
-            totalProtein += await foodData.get(foods[i]).protein * servings[i];
+            let food = await foodData.get(foods[i]);
+            totalCalories += food.calories * servings[i];
+            totalFat += food.fat * servings[i];
+            totalCarbs += food.carbs * servings[i];
+            totalProtein += food.protein * servings[i];
         }
         const updatedSavedPlate = {
             userId: userId,
