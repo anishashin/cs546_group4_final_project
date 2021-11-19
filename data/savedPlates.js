@@ -154,14 +154,14 @@ let exportedMethods = {
         const savedPlate = await this.get(id);
 
         const userCollection = await users();
-        const user = await userCollection.findOne({'savedPlates._id': parsedSavedPlateId});
+        const user = await userCollection.findOne({savedPlates: id});
         if(user === null) throw new Error('No saved plate with that id.');
         const userSavedPlateList = user.savedPlates;
         const updatedUser = {
             savedPlates: []
         };
         for(let sp of userSavedPlateList) {
-            if(sp._id !== id) {
+            if(sp !== id) {
                 updatedUser.savedPlates.push(sp);
             }
         }
