@@ -1,4 +1,4 @@
-//TO DO: round numbers
+//TO DO: round numbers to one decimal point
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
@@ -93,32 +93,28 @@ let exportedMethods = {
         return await this.get(newId.toString());
     },
 
-    async update(id, userId, title, foods, servings) {
+    async update(id, title, foods, servings) {
         if(!id || typeof id !== 'string' || id.trim() === '') {
             throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
         }
-        if(!userId || typeof userId !== 'string' || userId.trim() === '') {
-            throw new Error('Parameter 2 [userId] must be a non-empty string containing more than just spaces.');
-        }
-        const user = await userData.get(userId);
         if(!title || typeof title !== 'string' || title.trim() === '') {
-            throw new Error('Parameter 3 [title] must be a non-empty string containing more than just spaces.');
+            throw new Error('Parameter 2 [title] must be a non-empty string containing more than just spaces.');
         }
         if(Array.isArray(foods) === false || foods.length === 0) {
-            throw new Error('Parameter 4 [foods] must be a non-empty array.');
+            throw new Error('Parameter 3 [foods] must be a non-empty array.');
         }
         for(let i = 0; i < foods.length; i++) {
             if(!foods[i] || typeof foods[i] !== 'string' || foods[i].trim() === '') {
-                throw new Error('Parameter 4 [foods] must only contain non-empty string(s) with more than just spaces.')
+                throw new Error('Parameter 3 [foods] must only contain non-empty string(s) with more than just spaces.')
             }
             let food = await foodData.get(foods[i]);
         }
         if(Array.isArray(servings) === false || servings.length !== foods.length) {
-            throw new Error('Parameter 5 [servings] must be an array with the same length as Parameter 4 [foods].');
+            throw new Error('Parameter 4 [servings] must be an array with the same length as Parameter 3 [foods].');
         }
         for(let i = 0; i < servings.length; i++) {
             if(!servings[i] || typeof servings[i] !== 'number' || servings[i] <= 0) {
-                throw new Error('Parameter 5 [servings] must only contain numbers greater than 0.')
+                throw new Error('Parameter 4 [servings] must only contain numbers greater than 0.')
             }
         }
         let parsedId = ObjectId(id);
@@ -136,7 +132,6 @@ let exportedMethods = {
             totalProtein += food.protein * servings[i];
         }
         const updatedSavedPlate = {
-            userId: userId,
             title: title,
             foods: JSON.parse(JSON.stringify(foods)),
             servings: JSON.parse(JSON.stringify(servings)),
