@@ -13,8 +13,6 @@ let exportedMethods = {
         const commentList = await commentCollection.find({}).toArray();
         for(let comment of commentList) {
             comment._id = comment._id.toString();
-            comment.foodId = comment.foodId.toString();
-            comment.userId = comment.userId.toString();
         }
         return commentList;
     },
@@ -28,8 +26,6 @@ let exportedMethods = {
         const comment = await commentCollection.findOne({_id: parsedId});
         if(comment === null) throw new Error('No comment with that id.');
         comment._id = comment._id.toString();
-        comment.foodId = comment.foodId.toString();
-        comment.userId = comment.userId.toString();
         return comment;
     },
 
@@ -37,9 +33,11 @@ let exportedMethods = {
         if(!foodId || typeof foodId !== 'string' || foodId.trim() === '') {
             throw new Error('Parameter 1 [foodId] must be a non-empty string containing more than just spaces.');
         }
+        const food = await foodData.get(foodId);
         if(!userId || typeof userId !== 'string' || userId.trim() === '') {
             throw new Error('Parameter 2 [userId] must be a non-empty string containing more than just spaces.');
         }
+        const user = await userData.get(userId);
         if(!text || typeof text !== 'string' || text.trim() === '') {
             throw new Error('Parameter 3 [text] must be a non-empty string containing more than just spaces.');
         }
@@ -53,7 +51,6 @@ let exportedMethods = {
         if(insertInfo.insertedCount === 0) throw new Error('Could not add comment.');
         const newId = insertInfo.insertedId;
 
-        const user = await userData.get(userId);
         let userCommentList = user.comments;
         userCommentList.push(newId.toString());
         let parsedUserId = ObjectId(userId);
@@ -62,9 +59,8 @@ let exportedMethods = {
             comments: userCommentList
         };
         const updateInfo = await userCollection.updateOne({_id: parsedUserId}, {$set: updatedUser});
-        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update user successfully.');
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not add comment.');
 
-        const food = await foodData.get(foodId);
         let foodCommentList = food.comments;
         foodCommentList.push(newId.toString());
         let parsedFoodId = ObjectId(foodId);
@@ -73,9 +69,27 @@ let exportedMethods = {
             comments: foodCommentList
         };
         const updateInfo2 = await foodCollection.updateOne({_id: parsedFoodId}, {$set: updatedFood});
-        if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not update food successfully.');
+        if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not add comment.');
 
         return await this.get(newId.toString());
+    },
+
+    async update(id, text) {
+        if(!id || typeof id !== 'string' || id.trim() === '') {
+            throw new Error('Parameter 1 [id] must be a non-empty string containing more than just spaces.');
+        }
+        if(!text || typeof text !== 'string' || text.trim() === '') {
+            throw new Error('Parameter 2 [text] must be a non-empty string containing more than just spaces.');
+        }
+        let parsedId = ObjectId(id);
+        const commentCollection = await comments();
+        const comment = await this.get(id);
+        const updatedComment = {
+            text: text
+        };
+        const updateInfo = await commentCollection.updateOne({_id: parsedId}, {$set: updatedComment});
+        if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update comment.');
+        return await this.get(id);
     },
 
     async remove(id) {
@@ -84,17 +98,17 @@ let exportedMethods = {
         }
         let parsedCommentId = ObjectId(id);
         const commentCollection = await comments();
-        await this.get(id);
+        const comment = await this.get(id);
 
         const userCollection = await users();
-        const user = await userCollection.findOne({'comments._id': parsedCommentId});
+        const user = await userCollection.findOne({comments: id});
         if(user === null) throw new Error('No comment with that id.');
         const userCommentList = user.comments;
         const updatedUser = {
             comments: []
         };
         for(let c of userCommentList) {
-            if(c._id !== id) {
+            if(c !== id) {
                 updatedUser.comments.push(c);
             }
         }
@@ -102,23 +116,23 @@ let exportedMethods = {
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not delete comment.');
 
         const foodCollection = await foods();
-        const food = await foodCollection.findOne({'comments._id': parsedCommentId});
+        const food = await foodCollection.findOne({comments: id});
         if(food === null) throw new Error('No comment with that id.');
         const foodCommentList = food.comments;
         const updatedFood = {
             comments: []
         };
         for(let c of foodCommentList) {
-            if(c._id !== id) {
+            if(c !== id) {
                 updatedFood.comments.push(c);
             }
         }
         const updateInfo2 = await foodCollection.updateOne({_id: food._id}, {$set: updatedFood});
         if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not delete comment.');
         
-        const deletionInfo = await commentCollection.deleteOne({_id: parsedCommentId});
-        if(deletionInfo.deletedCount === 0) throw new Error('Could not delete comment.');
-        return {'commentId': reviewId, 'deleted': true};
+        const deleteInfo = await commentCollection.deleteOne({_id: parsedCommentId});
+        if(deleteInfo.deletedCount === 0) throw new Error('Could not delete comment.');
+        return {'commentId': id, 'deleted': true};
     }
 };
 
