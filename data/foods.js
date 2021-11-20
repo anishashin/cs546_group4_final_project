@@ -11,9 +11,6 @@ let exportedMethods = {
         const foodList = await foodCollection.find({}).toArray();
         for(let food of foodList) {
             food._id = food._id.toString();
-            for(let comment of food.comments) {
-                comment._id = comment._id.toString();
-            }
         }
         return foodList;
     },
@@ -27,9 +24,6 @@ let exportedMethods = {
         const food = await foodCollection.findOne({_id: parsedId});
         if(food === null) throw new Error('No food with that id.');
         food._id = food._id.toString();
-        for(let comment of food.comments) {
-            comment._id = comment._id.toString();
-        }
         return food;
     },
 
