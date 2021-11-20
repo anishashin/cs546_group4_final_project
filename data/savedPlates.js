@@ -1,4 +1,3 @@
-//TO DO: round numbers to one decimal point
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
@@ -53,6 +52,7 @@ let exportedMethods = {
             if(!servings[i] || typeof servings[i] !== 'number' || servings[i] <= 0) {
                 throw new Error('Parameter 4 [servings] must only contain numbers greater than 0.')
             }
+            servings[i] = Math.round(servings[i] * 10) / 10;
         }
         const savedPlateCollection = await savedPlates();
         let totalCalories = 0;
@@ -71,10 +71,10 @@ let exportedMethods = {
             title: title,
             foods: JSON.parse(JSON.stringify(foods)),
             servings: JSON.parse(JSON.stringify(servings)),
-            totalCalories: totalCalories,
-            totalFat: totalFat,
-            totalCarbs: totalCarbs,
-            totalProtein: totalProtein
+            totalCalories: Math.round(totalCalories * 10) / 10,
+            totalFat: Math.round(totalFat * 10) / 10,
+            totalCarbs: Math.round(totalCarbs * 10) / 10,
+            totalProtein: Math.round(totalProtein * 10) / 10
         };
         const insertInfo = await savedPlateCollection.insertOne(newSavedPlate);
         if(insertInfo.insertedCount === 0) throw new Error('Could not create saved plate.');
@@ -116,6 +116,7 @@ let exportedMethods = {
             if(!servings[i] || typeof servings[i] !== 'number' || servings[i] <= 0) {
                 throw new Error('Parameter 4 [servings] must only contain numbers greater than 0.')
             }
+            servings[i] = Math.round(servings[i] * 10) / 10;
         }
         let parsedId = ObjectId(id);
         const savedPlateCollection = await savedPlates();
@@ -135,10 +136,10 @@ let exportedMethods = {
             title: title,
             foods: JSON.parse(JSON.stringify(foods)),
             servings: JSON.parse(JSON.stringify(servings)),
-            totalCalories: totalCalories,
-            totalFat: totalFat,
-            totalCarbs: totalCarbs,
-            totalProtein: totalProtein
+            totalCalories: Math.round(totalCalories * 10) / 10,
+            totalFat: Math.round(totalFat * 10) / 10,
+            totalCarbs: Math.round(totalCarbs * 10) / 10,
+            totalProtein: Math.round(totalProtein * 10) / 10
         };
         const updateInfo = await savedPlateCollection.updateOne({_id: parsedId}, {$set: updatedSavedPlate});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update saved plate.');
