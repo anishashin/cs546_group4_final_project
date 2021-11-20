@@ -1,9 +1,9 @@
-// TO DO: update saved plates when a food is edited/deleted
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
 const foods = mongoCollections.foods;
 const comments = mongoCollections.comments;
+const savedPlates = mongoCollections.savedPlates;
 const commentData = require('./comments');
 
 let exportedMethods = {
@@ -114,6 +114,31 @@ let exportedMethods = {
         };
         const updateInfo = await foodCollection.updateOne({_id: parsedId}, {$set: updatedFood});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update food.');
+        
+        const savedPlateCollection = await savedPlates();
+        const savedPlateList = await savedPlateCollection.find({foods: id}).toArray();
+        for(let sp of savedPlateList) {
+            let totalCalories = 0;
+            let totalFat = 0;
+            let totalCarbs = 0;
+            let totalProtein = 0;
+            for(let i = 0; i < sp.foods.length; i++) {
+                let food = await this.get(sp.foods[i]);
+                totalCalories += food.calories * sp.servings[i];
+                totalFat += food.fat * sp.servings[i];
+                totalCarbs += food.carbs * sp.servings[i];
+                totalProtein += food.protein * sp.servings[i];
+            }
+            let updatedSavedPlate = {
+                totalCalories: Math.round(totalCalories * 10) / 10,
+                totalFat: Math.round(totalFat * 10) / 10,
+                totalCarbs: Math.round(totalCarbs * 10) / 10,
+                totalProtein: Math.round(totalProtein * 10) / 10
+            };
+            let updateInfo2 = await savedPlateCollection.updateOne({_id: sp._id}, {$set: updatedSavedPlate});
+            if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not update food.');
+        }
+
         return await this.get(id);
     },
 
@@ -129,6 +154,38 @@ let exportedMethods = {
         const commentList = await commentCollection.find({foodId: id}).toArray();
         for(let comment of commentList) {
             let result = await commentData.remove(comment._id.toString());
+        }
+
+        const savedPlateCollection = await savedPlates();
+        const savedPlateList = await savedPlateCollection.find({foods: id}).toArray();
+        for(let sp of savedPlateList) {
+            let foodList = sp.foods;
+            let servingList = sp.servings;
+            let updatedSavedPlate = {
+                foods: [],
+                servings: [],
+                totalCalories: 0,
+                totalFat: 0,
+                totalCarbs: 0,
+                totalProtein: 0
+            };
+            for(let i = 0; i < foodList.length; i++) {
+                if(foodList[i] !== id) {
+                    updatedSavedPlate.foods.push(foodList[i]);
+                    updatedSavedPlate.servings.push(servingList[i]);
+                    let food = await this.get(foodList[i]);
+                    updatedSavedPlate.totalCalories += food.calories * servingList[i];
+                    updatedSavedPlate.totalFat += food.fat * servingList[i];
+                    updatedSavedPlate.totalCarbs += food.carbs * servingList[i];
+                    updatedSavedPlate.totalProtein += food.protein * servingList[i];
+                }
+            }
+            updatedSavedPlate.totalCalories = Math.round(updatedSavedPlate.totalCalories * 10) / 10;
+            updatedSavedPlate.totalFat = Math.round(updatedSavedPlate.totalFat * 10) / 10;
+            updatedSavedPlate.totalCarbs = Math.round(updatedSavedPlate.totalCarbs * 10) / 10;
+            updatedSavedPlate.totalProtein = Math.round(updatedSavedPlate.totalProtein * 10) / 10;
+            let updateInfo2 = await savedPlateCollection.updateOne({_id: sp._id}, {$set: updatedSavedPlate});
+            if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not remove food.');
         }
 
         const deleteInfo = await foodCollection.deleteOne({_id: parsedFoodId});
