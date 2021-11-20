@@ -1,9 +1,10 @@
-// TO DO: update saved plates when a food is edited/deleted, test comments when a food is edited/deleted
+// TO DO: update saved plates when a food is edited/deleted
 let {ObjectId} = require('mongodb');
 
 const mongoCollections = require('../config/mongoCollections');
 const foods = mongoCollections.foods;
 const comments = mongoCollections.comments;
+const commentData = require('./comments');
 
 let exportedMethods = {
     async getAll() {
@@ -125,11 +126,13 @@ let exportedMethods = {
         const food = await this.get(id);
 
         const commentCollection = await comments();
-        const deleteInfo = await commentCollection.deleteMany({foodId: id});
-        if(deleteInfo.deletedCount !== food.comments.length) throw new Error("Could not delete the food's comments.");
+        const commentList = await commentCollection.find({foodId: id}).toArray();
+        for(let comment of commentList) {
+            let result = await commentData.remove(comment._id.toString());
+        }
 
-        const deleteInfo2 = await foodCollection.deleteOne({_id: parsedFoodId});
-        if(deleteInfo2.deletedCount === 0) throw new Error('Could not remove food.');
+        const deleteInfo = await foodCollection.deleteOne({_id: parsedFoodId});
+        if(deleteInfo.deletedCount === 0) throw new Error('Could not remove food.');
         return {'foodId': id, 'deleted': true};
     }
 };
