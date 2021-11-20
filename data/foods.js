@@ -56,13 +56,13 @@ let exportedMethods = {
         const foodCollection = await foods();
         const newFood = {
             name: name,
-            servingSizeNumber: servingSizeNumber,
+            servingSizeNumber: Math.round(servingSizeNumber * 10) / 10,
             servingSizeUnitSingular: servingSizeUnitSingular,
             servingSizeUnitPlural: servingSizeUnitPlural,
-            calories: calories,
-            fat: fat,
-            carbs: carbs,
-            protein: protein,
+            calories: Math.round(calories * 10) / 10,
+            fat: Math.round(fat * 10) / 10,
+            carbs: Math.round(carbs * 10) / 10,
+            protein: Math.round(protein * 10) / 10,
             comments: []
         };
         const insertInfo = await foodCollection.insertOne(newFood);
@@ -104,13 +104,13 @@ let exportedMethods = {
         const food = await this.get(id);
         const updatedFood = {
             name: name,
-            servingSizeNumber: servingSizeNumber,
+            servingSizeNumber: Math.round(servingSizeNumber * 10) / 10,
             servingSizeUnitSingular: servingSizeUnitSingular,
             servingSizeUnitPlural: servingSizeUnitPlural,
-            calories: calories,
-            fat: fat,
-            carbs: carbs,
-            protein: protein
+            calories: Math.round(calories * 10) / 10,
+            fat: Math.round(fat * 10) / 10,
+            carbs: Math.round(carbs * 10) / 10,
+            protein: Math.round(protein * 10) / 10
         };
         const updateInfo = await foodCollection.updateOne({_id: parsedId}, {$set: updatedFood});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update food.');
