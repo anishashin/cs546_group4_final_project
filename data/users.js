@@ -58,6 +58,29 @@ let exportedMethods = {
         if(insertInfo.insertedCount === 0) throw new Error('Could not create user.');
         const newId = insertInfo.insertedId;
         return await this.get(newId.toString());
+    },
+
+    async check(username, password) {
+        if(!username || typeof username !== 'string' || !username.match(/^[a-zA-Z0-9]{4,}$/)) {
+            throw new Error('Parameter 1 [username] must be at least 4 characters long and only contain alphanumeric characters.');
+        }
+        if(!password || typeof password !== 'string' || !password.match(/^[^\s]{6,}$/)) {
+            throw new Error('Parameter 2 [password] must be at least 6 characters long and cannot contain spaces.');
+        }
+        const userCollection = await users();
+        const user = await userCollection.findOne({username: username.toLowerCase()});
+        if(user === null) throw new Error('Either the username or password is invalid.');
+        let compareResult = false;
+        try {
+            compareResult = await bcrypt.compare(password, user.hashedPassword);
+        } catch (e) {
+            //no op
+        }
+        if(compareResult) {
+            return {authenticated: true};
+        } else {
+            throw new Error('Either the username or password is invalid.');
+        }
     }
 };
 
