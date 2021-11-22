@@ -5,7 +5,6 @@ const comments = mongoCollections.comments;
 const users = mongoCollections.users;
 const foods = mongoCollections.foods;
 const userData = require('./users');
-const foodData = require('./foods');
 
 let exportedMethods = {
     async getAll() {
@@ -33,7 +32,11 @@ let exportedMethods = {
         if(!foodId || typeof foodId !== 'string' || foodId.trim() === '') {
             throw new Error('Parameter 1 [foodId] must be a non-empty string containing more than just spaces.');
         }
-        const food = await foodData.get(foodId);
+        let parsedFoodId = ObjectId(foodId);
+        const foodCollection = await foods();
+        const food = await foodCollection.findOne({_id: parsedFoodId});
+        if(food === null) throw new Error('No food with that id.');
+        food._id = food._id.toString();
         if(!userId || typeof userId !== 'string' || userId.trim() === '') {
             throw new Error('Parameter 2 [userId] must be a non-empty string containing more than just spaces.');
         }
@@ -63,8 +66,6 @@ let exportedMethods = {
 
         let foodCommentList = food.comments;
         foodCommentList.push(newId.toString());
-        let parsedFoodId = ObjectId(foodId);
-        const foodCollection = await foods();
         const updatedFood = {
             comments: foodCommentList
         };
