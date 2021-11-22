@@ -4,6 +4,7 @@
   "description": "Group 4's final project module",
   "main": "app.js",
   "scripts": {
+    "seed": "node ./tasks/seed.js",
     "start": "node app.js"
   },
   "author": "Anisha Shin, Kushal Patel, Lasya Josyula, Peixin Dai",
