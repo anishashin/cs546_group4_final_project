@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         const savedPlateList = await savedPlateData.getAll();
         res.status(200).json(savedPlateList);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -84,7 +84,7 @@ router.post('/', async (req, res) => {
         );
         res.status(200).json(newSavedPlate);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -145,7 +145,7 @@ router.put('/:id', async (req, res) => {
         );
         res.status(200).json(updatedSavedPlate);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -164,7 +164,7 @@ router.delete('/:id', async (req, res) => {
         const result = await savedPlateData.remove(req.params.id);
         res.status(200).json(result);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 

@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const foodList = await foodData.getAll();
         res.status(200).json(foodList);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
         );
         res.status(200).json(newFood);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -142,7 +142,7 @@ router.put('/:id', async (req, res) => {
         );
         res.status(200).json(updatedFood);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -161,7 +161,7 @@ router.delete('/:id', async (req, res) => {
         const result = await foodData.remove(req.params.id);
         res.status(200).json(result);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 

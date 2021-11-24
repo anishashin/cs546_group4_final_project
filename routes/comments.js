@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         const commentList = await commentData.getAll();
         res.status(200).json(commentList);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
         );
         res.status(200).json(newComment);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -96,7 +96,7 @@ router.put('/:id', async (req, res) => {
         );
         res.status(200).json(updatedComment);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -115,7 +115,7 @@ router.delete('/:id', async (req, res) => {
         const result = await commentData.remove(req.params.id);
         res.status(200).json(result);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 

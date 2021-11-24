@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const userList = await userData.getAll();
         res.status(200).json(userList);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
         );
         res.status(200).json(newUser);
     } catch (e) {
-        res.status(500).json({error: e});
+        res.status(500).json({error: e.message});
     }
 });
 
