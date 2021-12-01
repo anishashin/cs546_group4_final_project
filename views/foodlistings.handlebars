@@ -1,19 +1,19 @@
 <h1>Food Listings Page</h1>
 <main>
     {{#if foodList}}
-        {{#each foodList}}
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4 text-end">
+            {{#each foodList}}
                 <div class="col">
                     <div class="card h-100">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">{{name}}</h5>
-                            <p class="card-text">{{calories}} calories</p>
+                            <h5 class="card-title"><a href="/foods/{{_id}}">{{name}}</a></h5>
+                            <p class="card-text">{{calories}} cal</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        {{/each}}
+                </div>            
+            {{/each}}
+        </div>
     {{else}}
         <p>There are no foods currently in the database.</p>
     {{/if}}
