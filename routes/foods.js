@@ -6,7 +6,7 @@ const foodData = data.foods;
 router.get('/', async (req, res) => {
     try {
         const foodList = await foodData.getAll();
-        res.status(200).json(foodList);
+        res.status(200).render('foodlistings', {title: 'Food Listings Page', foodList: foodList});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
