@@ -1,7 +1,12 @@
-<h1>Food Listings Page</h1>
+<h1>Food Listings Page</h1><br>
+
 <main>
+    <form>
+        <input class="form-control" type="text" placeholder="Search for foods..." aria-label="search bar">
+    </form><br>
+
     {{#if foodList}}
-        <div class="row row-cols-1 row-cols-md-4 g-4 text-end">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 text-end">
             {{#each foodList}}
                 <div class="col">
                     <div class="card h-100">
