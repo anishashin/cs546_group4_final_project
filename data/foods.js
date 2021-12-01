@@ -9,7 +9,7 @@ const commentData = require('./comments');
 let exportedMethods = {
     async getAll() {
         const foodCollection = await foods();
-        const foodList = await foodCollection.find({}).toArray();
+        const foodList = await foodCollection.find({}).sort({name: 1}).toArray();
         for(let food of foodList) {
             food._id = food._id.toString();
         }
