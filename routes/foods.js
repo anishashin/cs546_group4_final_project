@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require('../data');
 const foodData = data.foods;
 const commentData = data.comments;
+const userData = data.users;
 
 router.get('/', async (req, res) => {
     try {
@@ -27,6 +28,10 @@ router.get('/:id', async (req, res) => {
             food.servingSizeUnit = food.servingSizeUnitPlural;
         }
         const commentList = await commentData.getAll(food._id);
+        for(let comment of commentList) {
+            let user = await userData.get(comment.userId);
+            comment.userName = user.firstName + ' ' + user.lastName;
+        }
         res.status(200).render('individualfood', {title: food.name, food: food, commentList: commentList});
     } catch (e) {
         res.status(404).json({error: 'Food not found.'});

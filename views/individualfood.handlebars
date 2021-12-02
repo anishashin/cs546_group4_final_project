@@ -27,7 +27,7 @@
                 <td>{{food.protein}}</td>
             </tr>
         </tbody>
-    </table>
+    </table><br>
 
     <h3>Comments</h3>
     {{#if commentList}}
@@ -36,8 +36,10 @@
                 <div class="col">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">{{this.text}}</h5>
-                            <p class="card-text">By: {{this.userId}}</p>
+                            <blockquote class="blockquote">
+                                <p>{{this.text}}</p>
+                                <footer class="blockquote-footer">{{this.userName}}</footer>
+                            </blockquote>
                         </div>
                     </div>
                 </div>
