@@ -19,7 +19,13 @@ router.get('/:id', async (req, res) => {
     }
     try {
         const food = await foodData.get(req.params.id);
-        res.status(200).json(food);
+        if(food.servingSizeNumber <= 1) {
+            food.servingSizeUnit = food.servingSizeUnitSingular;
+        }
+        else {
+            food.servingSizeUnit = food.servingSizeUnitPlural;
+        }
+        res.status(200).render('individualfood', {title: food.name, food: food});
     } catch (e) {
         res.status(404).json({error: 'Food not found.'});
     }

@@ -1,0 +1,49 @@
+<h1>{{food.name}}</h1>
+
+<main>
+    <img src="..." class="img-thumbnail" alt="{{food.name}}"><br><br>
+
+    <table class="table table-bordered caption-top">
+        <caption>Nutrition Facts</caption>
+        <tbody>
+            <tr>
+                <th scope="row">Serving Size</th>
+                <td>{{food.servingSizeNumber}} {{food.servingSizeUnit}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Calories</th>
+                <td>{{food.calories}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Fat</th>
+                <td>{{food.fat}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Carbohydrates</th>
+                <td>{{food.carbs}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Protein</th>
+                <td>{{food.protein}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Comments</h3>
+    {{#if food.comments}}
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+            {{#each food.comments}}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this}}</h5>
+                            <p class="card-text">By: {{this}}</p>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <p>There are currently no comments for this food.</p>
+    {{/if}}
+</main>
