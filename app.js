@@ -21,7 +21,15 @@ app.use(
       resave: false
     })
 );
-  
+
+app.get('/', (req, res) => {
+  try {
+    res.status(200).render('home', {title: 'Pierce Dining Hall Nutrition Calculator'});
+  } catch (e) {
+    res.status(500).json({error: e.message});
+  }
+});
+
 app.use('/private', (req, res, next) => {
     console.log(req.session.id);
     if (!req.session.user) {
