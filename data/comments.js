@@ -7,9 +7,12 @@ const foods = mongoCollections.foods;
 const userData = require('./users');
 
 let exportedMethods = {
-    async getAll() {
+    async getAll(foodId) {
+        if(!foodId || typeof foodId !== 'string' || foodId.trim() === '') {
+            throw new Error('Parameter 1 [food id] must be a non-empty string containing more than just spaces.');
+        }
         const commentCollection = await comments();
-        const commentList = await commentCollection.find({}).toArray();
+        const commentList = await commentCollection.find({foodId: foodId}).toArray();
         for(let comment of commentList) {
             comment._id = comment._id.toString();
         }

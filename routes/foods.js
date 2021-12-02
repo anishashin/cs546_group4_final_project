@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const foodData = data.foods;
+const commentData = data.comments;
 
 router.get('/', async (req, res) => {
     try {
@@ -25,7 +26,8 @@ router.get('/:id', async (req, res) => {
         else {
             food.servingSizeUnit = food.servingSizeUnitPlural;
         }
-        res.status(200).render('individualfood', {title: food.name, food: food});
+        const commentList = await commentData.getAll(food._id);
+        res.status(200).render('individualfood', {title: food.name, food: food, commentList: commentList});
     } catch (e) {
         res.status(404).json({error: 'Food not found.'});
     }

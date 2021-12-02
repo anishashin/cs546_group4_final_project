@@ -30,14 +30,14 @@
     </table>
 
     <h3>Comments</h3>
-    {{#if food.comments}}
+    {{#if commentList}}
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
-            {{#each food.comments}}
+            {{#each commentList}}
                 <div class="col">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">{{this}}</h5>
-                            <p class="card-text">By: {{this}}</p>
+                            <h5 class="card-title">{{this.text}}</h5>
+                            <p class="card-text">By: {{this.userId}}</p>
                         </div>
                     </div>
                 </div>
