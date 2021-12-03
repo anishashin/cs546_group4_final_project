@@ -3,6 +3,7 @@ const router = express.Router();
 const data = require('../data');
 const userData = data.users;
 const savedPlateData = data.savedPlates;
+const foodData = data.foods;
 
 router.get('/', async (req, res) => {
     try {
@@ -21,6 +22,17 @@ router.get('/:id', async (req, res) => {
     try {
         const user = await userData.get(req.params.id);
         const savedPlateList = await savedPlateData.getAll(req.params.id);
+        for(let savedPlate of savedPlateList) {
+            for(let i = 0; i <savedPlate.foods.length; i++) {
+                savedPlate.foods[i] = await foodData.get(savedPlate.foods[i]);
+                if(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] <= 1) {
+                    savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
+                }
+                else {
+                    savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
+                }
+            }
+        }
         res.status(200).render('user', {title: 'User Profile', user: user, savedPlateList: savedPlateList});
     } catch (e) {
         res.status(404).json({error: 'User not found.'});
