@@ -24,20 +24,20 @@ app.use(
 
 app.get('/', (req, res) => {
   try {
-    res.status(200).render('home', {title: 'Pierce Dining Hall Nutrition Calculator'});
+    res.status(200).render('login', {title: 'Pierce Dining Hall Nutrition Calculator'});
   } catch (e) {
     res.status(500).json({error: e.message});
   }
 });
 
 app.use('/private', (req, res, next) => {
-    console.log(req.session.id);
     if (!req.session.user) {
       return res.redirect('/');
     } else {
       next();
     }
 });
+
 
 configRoutes(app);
 
