@@ -39,21 +39,22 @@
 
     <h3>Comments</h3>
     {{#if commentList}}
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
-            {{#each commentList}}
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <blockquote class="blockquote">
-                                <p>{{this.text}}</p>
-                                <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
-                            </blockquote>
-                        </div>
-                    </div>
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+        {{#each commentList}}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <blockquote class="blockquote">
+                        <p>{{this.text}}</p>
+                        <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a>
+                        </footer>
+                    </blockquote>
                 </div>
-            {{/each}}
+            </div>
         </div>
+        {{/each}}
+    </div>
     {{else}}
-        <p>There are currently no comments for this food.</p>
+    <p>There are currently no comments for this food.</p>
     {{/if}}
 </main>
