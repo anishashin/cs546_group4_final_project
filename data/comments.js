@@ -25,7 +25,7 @@ let exportedMethods = {
         }
         let parsedId = ObjectId(id);
         const commentCollection = await comments();
-        const comment = await commentCollection.findOne({ _id: parsedId });
+        const comment = await commentCollection.findOne({_id: parsedId});
         if(comment === null) throw new Error('No comment with that id.');
         comment._id = comment._id.toString();
         return comment;
@@ -37,7 +37,7 @@ let exportedMethods = {
         }
         let parsedFoodId = ObjectId(foodId);
         const foodCollection = await foods();
-        const food = await foodCollection.findOne({ _id: parsedFoodId });
+        const food = await foodCollection.findOne({_id: parsedFoodId});
         if(food === null) throw new Error('No food with that id.');
         food._id = food._id.toString();
         if(!userId || typeof userId !== 'string' || userId.trim() === '') {
@@ -64,7 +64,7 @@ let exportedMethods = {
         const updatedUser = {
             comments: userCommentList
         };
-        const updateInfo = await userCollection.updateOne({ _id: parsedUserId }, { $set: updatedUser });
+        const updateInfo = await userCollection.updateOne({_id: parsedUserId}, {$set: updatedUser});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not add comment.');
 
         let foodCommentList = food.comments;
@@ -72,7 +72,7 @@ let exportedMethods = {
         const updatedFood = {
             comments: foodCommentList
         };
-        const updateInfo2 = await foodCollection.updateOne({ _id: parsedFoodId }, { $set: updatedFood });
+        const updateInfo2 = await foodCollection.updateOne({_id: parsedFoodId}, {$set: updatedFood});
         if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not add comment.');
 
         return await this.get(newId.toString());
@@ -91,7 +91,7 @@ let exportedMethods = {
         const updatedComment = {
             text: text
         };
-        const updateInfo = await commentCollection.updateOne({ _id: parsedId }, { $set: updatedComment });
+        const updateInfo = await commentCollection.updateOne({_id: parsedId}, {$set: updatedComment});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not update comment.');
         return await this.get(id);
     },
@@ -105,7 +105,7 @@ let exportedMethods = {
         const comment = await this.get(id);
 
         const userCollection = await users();
-        const user = await userCollection.findOne({ comments: id });
+        const user = await userCollection.findOne({comments: id});
         if(user === null) throw new Error('No comment with that id.');
         const userCommentList = user.comments;
         const updatedUser = {
@@ -116,12 +116,12 @@ let exportedMethods = {
                 updatedUser.comments.push(c);
             }
         }
-        const updateInfo = await userCollection.updateOne({ _id: user._id }, { $set: updatedUser });
+        const updateInfo = await userCollection.updateOne({_id: user._id}, {$set: updatedUser});
         if(!updateInfo.matchedCount && !updateInfo.modifiedCount) throw new Error('Could not delete comment.');
 
         const foodCollection = await foods();
-        const food = await foodCollection.findOne({ comments: id });
-        if (food === null) throw new Error('No comment with that id.');
+        const food = await foodCollection.findOne({comments: id});
+        if(food === null) throw new Error('No comment with that id.');
         const foodCommentList = food.comments;
         const updatedFood = {
             comments: []
@@ -131,11 +131,11 @@ let exportedMethods = {
                 updatedFood.comments.push(c);
             }
         }
-        const updateInfo2 = await foodCollection.updateOne({ _id: food._id }, { $set: updatedFood });
+        const updateInfo2 = await foodCollection.updateOne({_id: food._id}, {$set: updatedFood});
         if(!updateInfo2.matchedCount && !updateInfo2.modifiedCount) throw new Error('Could not delete comment.');
-
-        const deleteInfo = await commentCollection.deleteOne({ _id: parsedCommentId });
-        if (deleteInfo.deletedCount === 0) throw new Error('Could not delete comment.');
+        
+        const deleteInfo = await commentCollection.deleteOne({_id: parsedCommentId});
+        if(deleteInfo.deletedCount === 0) throw new Error('Could not delete comment.');
         return {'commentId': id, 'deleted': true};
     }
 };
