@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data');
 const userData = data.users;
+const savedPlateData = data.savedPlates;
 
 router.get('/', async (req, res) => {
     try {
@@ -19,7 +20,10 @@ router.get('/:id', async (req, res) => {
     }
     try {
         const user = await userData.get(req.params.id);
-        res.status(200).json(user);
+        const savedPlateList = await savedPlateData.getAll();
+
+        res.status(200).render('user', {title: 'User Profile', savedPlateList: savedPlateList, user: user});
+       //res.status(200).json(user);
     } catch (e) {
         res.status(404).json({error: 'User not found.'});
     }

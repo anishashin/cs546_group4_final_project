@@ -1,0 +1,26 @@
+<nav class="nav justify-content-end">
+    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link active" aria-current="page" href="/foods">Food List</a>
+    <a class="nav-link" href="/users">User</a>
+</nav>
+
+<h1>User Profile</h1>
+
+<main>
+
+    {{#if user}}
+        <p>First name: {{this.firstName}}</p>
+        <p>Last name: {{this.lastName}}</p>
+        <p>Username: {{this.username}}</p>
+    {{/if}}
+
+    {{#if savedPlateList.length}}
+        <ul>
+            {{#each savedPlateList}}
+                <li>{{this.title}}</li>          
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>There are no saved plates currently in the database.</p>
+    {{/if}}
+</main>
