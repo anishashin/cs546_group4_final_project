@@ -20,10 +20,8 @@ router.get('/:id', async (req, res) => {
     }
     try {
         const user = await userData.get(req.params.id);
-        const savedPlateList = await savedPlateData.getAll();
-
-        res.status(200).render('user', {title: 'User Profile', savedPlateList: savedPlateList, user: user});
-       //res.status(200).json(user);
+        const savedPlateList = await savedPlateData.getAll(req.params.id);
+        res.status(200).render('user', {title: 'User Profile', user: user, savedPlateList: savedPlateList});
     } catch (e) {
         res.status(404).json({error: 'User not found.'});
     }

@@ -7,9 +7,12 @@ const userData = require('./users');
 const foodData = require('./foods');
 
 let exportedMethods = {
-    async getAll() {
+    async getAll(userId) {
+        if(!userId || typeof userId !== 'string' || userId.trim() === '') {
+            throw new Error('Parameter 1 [user id] must be a non-empty string containing more than just spaces.');
+        }
         const savedPlateCollection = await savedPlates();
-        const savedPlateList = await savedPlateCollection.find({}).toArray();
+        const savedPlateList = await savedPlateCollection.find({userId: userId}).toArray();
         for(let savedPlate of savedPlateList) {
             savedPlate._id = savedPlate._id.toString();
         }
