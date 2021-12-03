@@ -31,6 +31,7 @@ const main = async () => {
     const meal2 = await savedPlates.create(kushal._id, "Kushal's Meal", [cheese_pizza._id, rigatoni._id], [3, 2]);
     const meal3 = await savedPlates.create(lasya._id, "Lasya's Meal", [hamburger_patty._id, white_rice._id], [1, 2]);
     const meal4 = await savedPlates.create(peixin._id, "Peixin's Meal", [hamburger_patty._id, cheese_pizza._id], [1, 2]);
+    const meal5 = await savedPlates.create(kushal._id, "Cheat Meal", [cheese_pizza._id, chicken_nuggets._id, tater_tots._id], [4, 4, 3]);
 
     const comment1 = await comments.create(rigatoni._id, anisha._id, 'The pasta is delicious!');
     const comment2 = await comments.create(cheese_pizza._id, kushal._id, 'My favorite midnight snack!');
