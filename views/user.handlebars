@@ -1,26 +1,65 @@
 <nav class="nav justify-content-end">
     <a class="nav-link" href="/">Home</a>
-    <a class="nav-link active" aria-current="page" href="/foods">Food List</a>
-    <a class="nav-link" href="/users">User</a>
+    <a class="nav-link" href="/foods">Food List</a>
+    <a class="nav-link active" aria-current="page" href="/users/{{user._id}}">User</a>
 </nav>
 
-<h1>User Profile</h1>
-
 <main>
-
-    {{#if user}}
-        <p>First name: {{this.firstName}}</p>
-        <p>Last name: {{this.lastName}}</p>
-        <p>Username: {{this.username}}</p>
+    {{#if user.firstName}}
+        {{#if user.lastName}}
+            <h1>{{user.firstName}} {{user.lastName}}</h1>
+        {{else}}
+            <h1>{{user.firstName}}</h1>
+        {{/if}}
+    {{else}}
+        {{#if user.lastName}}
+            <h1>{{user.lastName}}</h1>
+        {{/if}}
     {{/if}}
 
-    {{#if savedPlateList.length}}
-        <ul>
+    {{#if user.username}}
+        <p>@{{user.username}}</p>
+    {{/if}}<br>
+
+    <h3>Saved Plates</h3>
+    {{#if savedPlateList}}
+        <div class="row row-cols-1 row-cols-md-2 g-4">
             {{#each savedPlateList}}
-                <li>{{this.title}}</li>          
+                <div class="card h-100 mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <div class="card-body">
+                                <h5 class="card-title">{{title}}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <table class="table table-bordered caption-top">
+                                <caption>Nutrition Facts</caption>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Total Calories</th>
+                                        <td>{{totalCalories}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Fat</th>
+                                        <td>{{totalFat}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Carbohydrates</th>
+                                        <td>{{totalCarbs}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Total Protein</th>
+                                        <td>{{totalProtein}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             {{/each}}
-        </ul>
+        </div>
     {{else}}
-        <p>There are no saved plates currently in the database.</p>
+        <p>There are currently no saved plates for this user.</p>
     {{/if}}
 </main>
