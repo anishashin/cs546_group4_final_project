@@ -8,7 +8,7 @@
                 $(foods[i]).closest('.col')[0].style.display = 'initial';
             }
             else {
-                $(foods[i]).closest('.col')[0].style.display = 'none';        
+                $(foods[i]).closest('.col')[0].style.display = 'none';
             }
         }
     });
