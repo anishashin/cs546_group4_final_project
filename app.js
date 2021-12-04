@@ -1,41 +1,43 @@
 const express = require('express');
 const app = express();
 const static = express.static(__dirname + '/public');
-const session = require('express-session');
-
 const configRoutes = require('./routes');
+const session = require('express-session');
 const exphbs = require('express-handlebars');
+
+const handlebarsInstance = exphbs.create({
+  defaultLayout: 'main',
+  partialsDir: ['views/partials']
+});
 
 app.use('/public', static);
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
-app.use(
-    session({
-      name: 'AuthCookie',
-      secret: "Secret Code",
-      saveUninitialized: true,
-      resave: false
-    })
-);
+app.use(session({
+  name: 'AuthCookie',
+  secret: 'some secret string!',
+  resave: false,
+  saveUninitialized: true
+}));
 
-app.get('/', (req, res) => {
-  try {
-    res.status(200).render('login', {title: 'Pierce Dining Hall Nutrition Calculator'});
-  } catch (e) {
-    res.status(500).json({error: e.message});
+app.use('/private', async (req, res, next) => {
+  if(!req.session.user) {
+    res.status(403).json({error: e.message});
+  } else {
+    next();
   }
 });
 
-app.use('/private', (req, res, next) => {
-    if (!req.session.user) {
-      return res.redirect('/');
-    } else {
-      next();
-    }
+app.use('/foods/new', async (req, res, next) => {
+  if(!req.session.user) {
+    res.status(403).json({error: e.message});
+  } else {
+    next();
+  }
 });
 
 configRoutes(app);

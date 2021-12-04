@@ -13,7 +13,7 @@ const constructorMethod = (app) => {
   app.use('/comments', commentRoutes);
   app.use('/login', loginRoutes);
   app.use('/signup', signupRoutes);
-  app.use('/home', homeRoutes);
+  app.use('/', homeRoutes);
   
   app.use('*', (req, res) => {
     res.sendStatus(404);
