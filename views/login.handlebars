@@ -1,17 +1,19 @@
+<h1>Login</h1>
+
 <main>
-    <h1>Welcome to Pierce Dining Hall Nutritional Calculator!</h1>
-    <h2>Login</h2>
-    <form id="login-form" method="post" action="/login">
-        <label for="username">Username</label>
-        <input id="username" type="text" name="username" placeholder="Username"/>
-        <br><br>
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" placeholder="Password"/>
-        <br><br>
-        <button type="submit">Login</button>
+    <form action="/login" method="post" id="login-form">
+        <label for="username">Username:</label>
+        <input id="username" type="text" name="username" placeholder="Username"/><br>
+
+        <label for="password">Password:</label>
+        <input id="password" type="password" name="password" placeholder="Password"/><br>
+
+        <button type="submit">Login</button><br>
     </form>
-    <br>
+    
+    {{#if error}}
+        <p>Error: {{error}}</p><br>
+    {{/if}}
+
     <a href="/signup">Need to register? Click here to sign-up</a>
-    <br><br>
-    <h3>{{error}}</h3>
 </main>
