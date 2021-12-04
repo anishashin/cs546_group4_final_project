@@ -4,24 +4,34 @@ const data = require('../data');
 const userData = data.users;
 
 router.get('/', async (req, res) => {
-  res.render('login', { title: "Login Page" })
+  try {
+    res.status(200).render('login', {title: 'Login'});
+  } catch (e) {
+    res.status(500).json({error: e.message});
+  }
 });
 
 router.post('/', async (req, res) => {
-  let username = req.body["username"];
-  let password = req.body["password"];
-
+  let userInfo = req.body;
+  if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
+    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    return;
+  }
+  if(!userInfo.password || typeof userInfo.password !== 'string' || !userInfo.password.match(/^[^\s]{6,}$/)) {
+    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    return;
+  }
   try {
-    await userData.check(
-      username,
-      password
-    );
-    req.session.user = { username: username };
-    res.redirect("/home");
+    const result = await userData.check(userInfo.username, userInfo.password);
+    if(result.authenticated === true) {
+      req.session.user = {username: userInfo.username};
+      res.redirect('/');
+    }
+    else {
+      res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    }
   } catch (e) {
-    res.render('login', { title: "Login Page", error: "Either the username or password is invalid" });
-    console.log(e);
-    //res.sendStatus(400);
+    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
   }
 });
 

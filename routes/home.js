@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const data = require('../data');
-const userData = data.users;
 
 router.get('/', async (req, res) => {
-    res.render('home', { title: "Home Page" })
+    try {
+        res.status(200).render('home', {title: 'Home'});
+    } catch (e) {
+        res.status(500).json({error: e.message});
+    }
 });
 
 module.exports = router;
