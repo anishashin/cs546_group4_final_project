@@ -8,11 +8,17 @@
     </head>
     <body>
         <img src="../public/images/pierce.png" class="img-fluid" alt="Pierce Dining Hall">
-        <nav class="nav justify-content-end">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/foods">Food List</a>
-            <a class="nav-link" href="/login">Login</a>
-            <a class="nav-link" href="/signup">Sign Up</a>
+        <nav class="navbar">
+            <div class="container-fluid">
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
+                </ul>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                </ul>
+            </div>
         </nav>
         {{{body}}}
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
