@@ -103,6 +103,11 @@ router.put('/:id', async (req, res) => {
         res.status(400).json({error: 'You must provide data to edit a food.'});
         return;
     }
+    foodInfo.servingSizeNumber = parseFloat(foodInfo.servingSizeNumber);
+    foodInfo.calories = parseFloat(foodInfo.calories);
+    foodInfo.fat = parseFloat(foodInfo.fat);
+    foodInfo.carbs = parseFloat(foodInfo.carbs);
+    foodInfo.protein = parseFloat(foodInfo.protein);
     if(!foodInfo.name || typeof foodInfo.name !== 'string' || foodInfo.name.trim() === '') {
         res.status(400).json({error: 'Name must be a non-empty string containing more than just spaces.'});
         return;
@@ -153,7 +158,7 @@ router.put('/:id', async (req, res) => {
             foodInfo.carbs,
             foodInfo.protein
         );
-        res.status(200).json(updatedFood);
+        res.redirect('/foods/' + req.params.id);
     } catch (e) {
         res.status(500).json({error: e.message});
     }
