@@ -159,3 +159,42 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="commentFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form method="post" action="/comments">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add a Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label for="text" class="col-sm-2 col-form-label">Comment</label>
+                        <div class="col-sm-10">
+                            <input id="text" class="form-control" type="text" name="text" placeholder="Comment">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="userId" class="col-sm-2 col-form-label">User ID</label>
+                        <div class="col-sm-10">
+                            <input id="userId" class="form-control" type="text" name="userId" placeholder="UserId">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="foodId" class="col-sm-2 col-form-label">Food ID</label>
+                        <div class="col-sm-10">
+                            <input id="foodId" class="form-control" type="text" name="foodId" value="{{food._id}}""
+                                placeholder=" foodId">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
