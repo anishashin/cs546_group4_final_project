@@ -4,6 +4,7 @@ const static = express.static(__dirname + '/public');
 const configRoutes = require('./routes');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
@@ -13,6 +14,7 @@ const handlebarsInstance = exphbs.create({
 app.use('/public', static);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method'));
 
 app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');

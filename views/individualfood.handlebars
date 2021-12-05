@@ -1,7 +1,11 @@
-<h1>{{food.name}}</h1>
+<h1 class="text-center">{{food.name}}</h1>
 
 <main>
-    <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
+    <div class="text-center">
+        <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editFoodModal">Edit</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete</button>
+    </div>
 
     <table class="table table-bordered caption-top">
         <caption>Nutrition Facts</caption>
@@ -49,3 +53,23 @@
         <p>There are currently no comments for this food.</p>
     {{/if}}
 </main>
+
+<div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Food</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{food.name}} from the database?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="/foods/{{food._id}}?_method=DELETE">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
