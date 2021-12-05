@@ -9,10 +9,10 @@ const main = async () => {
     const db = await dbConnection();
     await db.dropDatabase();
 
-    const anisha = await users.create('Anisha', 'Shin', 'anishashin', 'password1');
-    const kushal = await users.create('Kushal', 'Patel', 'kushalpatel', 'password2');
-    const lasya = await users.create('Lasya', 'Josyula', 'lasyajosyula', 'password3');
-    const peixin = await users.create('Peixin', 'Dai', 'peixindai', 'password4');
+    const anisha = await users.create('Anisha', 'Shin', 'anishashin', 'password1', true);
+    const kushal = await users.create('Kushal', 'Patel', 'kushalpatel', 'password2', false);
+    const lasya = await users.create('Lasya', 'Josyula', 'lasyajosyula', 'password3', false);
+    const peixin = await users.create('Peixin', 'Dai', 'peixindai', 'password4', false);
 
     const cheese_pizza = await foods.create('Cheese Pizza', 1, 'medium slice', 'medium slices', 213, 7.8, 27, 9.1);
     

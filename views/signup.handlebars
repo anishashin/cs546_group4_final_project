@@ -1,25 +1,43 @@
-<h1>Sign Up</h1>
+<div class="container col-6 mt-3">
+    <h1 class="text-center">Sign Up</h1><br>
 
-<main>
-    <form action="/signup" method="post" id="signup-form">
-        <label for="firstName">First Name:</label>
-        <input id="firstName" type="text" name="firstName" placeholder="First Name"/><br>
+    <main>
+        <form action="/signup" method="post" id="signup-form" onsubmit="signUpButton.disabled = true; return true;">
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label for="firstName" class="visually-hidden">First Name</label>
+                    <input id="firstName" class="form-control" type="text" name="firstName" value="{{userInfo.firstName}}" placeholder="First Name">
+                </div>
+                <div class="col-6">
+                    <label for="lastName" class="visually-hidden">Last Name</label>
+                    <input id="lastName" class="form-control" type="text" name="lastName" value="{{userInfo.lastName}}" placeholder="Last Name">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="username" class="visually-hidden">Username</label>
+                <input id="username" class="form-control" type="text" name="username" value="{{userInfo.username}}" placeholder="Username">
+                <div id="usernameDescription" class="form-text">Username must be at least 4 characters long and can only contain alphanumeric characters.</div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="visually-hidden">Password</label>
+                <input id="password" class="form-control" type="password" name="password" placeholder="Password">
+                <div id="passwordDescription" class="form-text">Password must be at least 6 characters long and cannot contain spaces.</div>
+            </div>
+            <div class="mb-3 form-check">
+                <input id="isAdmin" class="form-check-input" type="checkbox" name="isAdmin" value="true">
+                <label for="isAdmin" class="form-check-label">Administrator</label>
+            </div>
+            <div class="mb-3 text-center">
+                <button id="signUpButton" type="submit" class="btn btn-primary text-center">Sign Up</button><br>
+            </div>
+        </form>
+        
+        {{#if error}}
+            <div class="alert alert-danger text-center" role="alert">{{error}}</div>
+        {{/if}}
 
-        <label for="lastName">Last Name:</label>
-        <input id="lastName" type="text" name="lastName" placeholder="Last Name"/><br>
-
-        <label for="username">Username:</label>
-        <input id="username" type="text" name="username" placeholder="Username"/><br>
-
-        <label for="password">Password:</label>
-        <input id="password" type="password" name="password" placeholder="Password"/><br>
-
-        <button type="submit">Sign Up</button><br>
-    </form>
-
-    {{#if error}}
-        <p>Error: {{error}}</p><br>
-    {{/if}}
-
-    <a href="/login">Already have an account? Click here to log-in</a>
-</main>
+        <div class="mb-3 text-center">
+            <a class="text-center" href="/login">Already have an account? Click here to log-in</a>
+        </div>
+    </main>
+</div>

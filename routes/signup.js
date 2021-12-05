@@ -14,31 +14,38 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   let userInfo = req.body;
   if(!userInfo.firstName || typeof userInfo.firstName !== 'string' || userInfo.firstName.trim() === '') {
-    res.status(400).render('signup', {title: 'Sign Up', error: 'First name must be a non-empty string containing more than just spaces.'});
+    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid first name.'});
     return;
   }
   if(!userInfo.lastName || typeof userInfo.lastName !== 'string' || userInfo.lastName.trim() === '') {
-    res.status(400).render('signup', {title: 'Sign Up', error: 'Last name must be a non-empty string containing more than just spaces.'});
+    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid last name.'});
     return;
   }
   if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
-    res.status(400).render('signup', {title: 'Sign Up', error: 'Username must be at least 4 characters long and only contain alphanumeric characters.'});
+    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid username.'});
     return;
   }
   if(!userInfo.password || typeof userInfo.password !== 'string' || !userInfo.password.match(/^[^\s]{6,}$/)) {
-    res.status(400).render('signup', {title: 'Sign Up', error: 'Password must be at least 6 characters long and cannot contain spaces.'});
+    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid password.'});
     return;
+  }
+  if(userInfo.isAdmin === 'true') {
+    userInfo.isAdmin = true;
+  }
+  else {
+    userInfo.isAdmin = false;
   }
   try {
     const newUser = await userData.create(
       userInfo.firstName,
       userInfo.lastName,
       userInfo.username,
-      userInfo.password
+      userInfo.password,
+      userInfo.isAdmin
     );
     res.redirect('/');
   } catch (e) {
-    res.status(400).render('signup', {title: 'Sign Up', error: e.message});
+    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: e.message});
   }
 });
 

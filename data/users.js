@@ -28,7 +28,7 @@ let exportedMethods = {
         return user;
     },
 
-    async create(firstName, lastName, username, password) {
+    async create(firstName, lastName, username, password, isAdmin) {
         if(!firstName || typeof firstName !== 'string' || firstName.trim() === '') {
             throw new Error('Parameter 1 [firstName] must be a non-empty string containing more than just spaces.');
         }
@@ -41,6 +41,9 @@ let exportedMethods = {
         if(!password || typeof password !== 'string' || !password.match(/^[^\s]{6,}$/)) {
             throw new Error('Parameter 4 [password] must be at least 6 characters long and cannot contain spaces.');
         }
+        if(typeof isAdmin !== 'boolean') {
+            throw new Error('Parameter 5 [isAdmin] must be a boolean.');
+        }
         const userCollection = await users();
         const user = await userCollection.findOne({username: username.toLowerCase()});
         if(user !== null) throw new Error('There is already a user with that username.');
@@ -49,7 +52,7 @@ let exportedMethods = {
             firstName: firstName,
             lastName: lastName,
             username: username.toLowerCase(),
-            isAdmin: false,
+            isAdmin: isAdmin,
             hashedPassword: hash,
             savedPlates: [],
             comments: []
@@ -62,7 +65,7 @@ let exportedMethods = {
 
     async check(username, password) {
         if(!username || typeof username !== 'string' || !username.match(/^[a-zA-Z0-9]{4,}$/)) {
-            throw new Error('Parameter 1 [username] must be at least 4 characters long and only contain alphanumeric characters.');
+            throw new Error('Parameter 1 [username] must be at least 4 characters long and can only contain alphanumeric characters.');
         }
         if(!password || typeof password !== 'string' || !password.match(/^[^\s]{6,}$/)) {
             throw new Error('Parameter 2 [password] must be at least 6 characters long and cannot contain spaces.');

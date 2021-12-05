@@ -14,11 +14,11 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   let userInfo = req.body;
   if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
-    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
     return;
   }
   if(!userInfo.password || typeof userInfo.password !== 'string' || !userInfo.password.match(/^[^\s]{6,}$/)) {
-    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
     return;
   }
   try {
@@ -28,10 +28,10 @@ router.post('/', async (req, res) => {
       res.redirect('/');
     }
     else {
-      res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+      res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
     }
   } catch (e) {
-    res.status(400).render('login', {title: 'Login', error: 'Invalid username and/or password.'});
+    res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
   }
 });
 
