@@ -21,7 +21,18 @@ router.get('/:id', async (req, res) => {
     }
     try {
         const savedPlate = await savedPlateData.get(req.params.id);
-        res.status(200).json(savedPlate);
+        const user = await userData.get(savedPlate.userId);
+        savedPlate.userName = user.firstName + ' ' + user.lastName;
+        for(let i = 0; i <savedPlate.foods.length; i++) {
+            savedPlate.foods[i] = await foodData.get(savedPlate.foods[i]);
+            if(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] <= 1) {
+                savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
+            }
+            else {
+                savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
+            }
+        }
+        res.status(200).render('saved_plate', {title: savedPlate.title, savedPlate: savedPlate});
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
     }
@@ -154,15 +165,16 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
+    let savedPlate;
     try {
-        const savedPlate = await savedPlateData.get(req.params.id);
+        savedPlate = await savedPlateData.get(req.params.id);
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
         return;
     }
     try {
         const result = await savedPlateData.remove(req.params.id);
-        res.status(200).json(result);
+        res.redirect('/users/' + savedPlate.userId);
     } catch (e) {
         res.status(500).json({error: e.message});
     }

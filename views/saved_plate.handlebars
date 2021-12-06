@@ -1,0 +1,70 @@
+<div class="container">
+    <h1>{{savedPlate.title}}</h1>
+    <div class="row">
+        <div class="col-9">
+            <h2>By: <a href="/users/{{savedPlate.userId}}">{{savedPlate.userName}}</a></h2>
+        </div>
+        <div class="col-3 text-end">
+            <a href="/savedPlates/edit/{{savedPlate._id}}" class="btn btn-secondary">Edit Saved Plate</a>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSavedPlateModal">Delete Saved Plate</button>
+        </div>
+    </div><br>
+
+    <main>
+        <div class="row">
+            <div class="col">
+                <h3>Foods</h3>
+                <ul>
+                    {{#if savedPlate.foods}}
+                        {{#each savedPlate.foods}}
+                            <li><a href="/foods/{{_id}}">{{name}}</a>, {{servings}}</li>
+                        {{/each}}
+                    {{/if}}
+                </ul>
+            </div>
+            <div class="col">
+                <table class="table table-bordered caption-top">
+                    <caption>Nutrition Facts</caption>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Total Calories</th>
+                            <td>{{savedPlate.totalCalories}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Fat</th>
+                            <td>{{savedPlate.totalFat}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Carbohydrates</th>
+                            <td>{{savedPlate.totalCarbs}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Total Protein</th>
+                            <td>{{savedPlate.totalProtein}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal fade" id="deleteSavedPlateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteSavedPlateLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSavedPlateLabel">Delete Saved Plate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete {{savedPlate.title}}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="/savedPlates/{{savedPlate._id}}?_method=DELETE">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
