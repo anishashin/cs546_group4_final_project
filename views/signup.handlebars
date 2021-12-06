@@ -6,21 +6,21 @@
             <div class="row mb-3">
                 <div class="col-6">
                     <label for="firstName" class="visually-hidden">First Name</label>
-                    <input id="firstName" class="form-control" type="text" name="firstName" value="{{userInfo.firstName}}" placeholder="First Name">
+                    <input id="firstName" class="form-control" type="text" name="firstName" value="{{userInfo.firstName}}" placeholder="First Name" required>
                 </div>
                 <div class="col-6">
                     <label for="lastName" class="visually-hidden">Last Name</label>
-                    <input id="lastName" class="form-control" type="text" name="lastName" value="{{userInfo.lastName}}" placeholder="Last Name">
+                    <input id="lastName" class="form-control" type="text" name="lastName" value="{{userInfo.lastName}}" placeholder="Last Name" required>
                 </div>
             </div>
             <div class="mb-3">
                 <label for="username" class="visually-hidden">Username</label>
-                <input id="username" class="form-control" type="text" name="username" value="{{userInfo.username}}" placeholder="Username">
+                <input id="username" class="form-control" type="text" name="username" value="{{userInfo.username}}" placeholder="Username" required>
                 <div id="usernameDescription" class="form-text">Username must be at least 4 characters long and can only contain alphanumeric characters.</div>
             </div>
             <div class="mb-3">
                 <label for="password" class="visually-hidden">Password</label>
-                <input id="password" class="form-control" type="password" name="password" placeholder="Password">
+                <input id="password" class="form-control" type="password" name="password" placeholder="Password" required>
                 <div id="passwordDescription" class="form-text">Password must be at least 6 characters long and cannot contain spaces.</div>
             </div>
             <div class="mb-3 form-check">
