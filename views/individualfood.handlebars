@@ -88,7 +88,7 @@
 <div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/comments">
+            <form method="post" action="/comments" id="addCommentForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCommentLabel">Add Comment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -96,8 +96,9 @@
                 <div class="modal-body">
                     <label for="text" class="visually-hidden">Text</label>
                     <input type="hidden" id="foodId" name="foodId" value={{food._id}}>
-                    <input type="hidden" id="userId" name="userId" value="61a9b816e26e9c5ef413ef23">
+                    <input type="hidden" id="userId" name="userId">
                     <textarea id="text" class="form-control" name="text" placeholder="Type your comment here." style="height: 100px" required></textarea>
+                    <div id="error"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
