@@ -1,59 +1,69 @@
-<h1 class="text-center">{{food.name}}</h1>
+<div class="container">
+    <h1 class="text-center">{{food.name}}</h1>
 
-<main>
-    <div class="text-center">
-        <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editFoodModal">Edit Food</button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
-    </div>
+    <main>
+        <div class="text-center">
+            <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editFoodModal">Edit Food</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
+        </div>
 
-    <table class="table table-bordered caption-top">
-        <caption>Nutrition Facts</caption>
-        <tbody>
-            <tr>
-                <th scope="row">Serving Size</th>
-                <td>{{food.servingSizeNumber}} {{food.servingSizeUnit}}</td>
-            </tr>
-            <tr>
-                <th scope="row">Calories</th>
-                <td>{{food.calories}}</td>
-            </tr>
-            <tr>
-                <th scope="row">Fat</th>
-                <td>{{food.fat}}</td>
-            </tr>
-            <tr>
-                <th scope="row">Carbohydrates</th>
-                <td>{{food.carbs}}</td>
-            </tr>
-            <tr>
-                <th scope="row">Protein</th>
-                <td>{{food.protein}}</td>
-            </tr>
-        </tbody>
-    </table><br>
+        <table class="table table-bordered caption-top">
+            <caption>Nutrition Facts</caption>
+            <tbody>
+                <tr>
+                    <th scope="row">Serving Size</th>
+                    <td>{{food.servingSizeNumber}} {{food.servingSizeUnit}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Calories</th>
+                    <td>{{food.calories}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fat</th>
+                    <td>{{food.fat}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Carbohydrates</th>
+                    <td>{{food.carbs}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Protein</th>
+                    <td>{{food.protein}}</td>
+                </tr>
+            </tbody>
+        </table><br>
 
-    <h3>Comments</h3>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button><br><br>
-    {{#if commentList}}
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
-            {{#each commentList}}
-                <div class="col">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <blockquote class="blockquote">
-                                <p>{{this.text}}</p>
-                                <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
-                            </blockquote>
+        <div class="row">
+            <div class="col-10">
+                <h3>Comments</h3>
+            </div>
+            <div class="col-2 text-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+            </div>
+        </div>
+
+        {{#if commentList}}
+            <br>
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+                {{#each commentList}}
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <blockquote class="blockquote">
+                                    <p>{{this.text}}</p>
+                                    <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
+                                </blockquote>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {{/each}}
-        </div>
-    {{else}}
-        <p>There are currently no comments for this food.</p>
-    {{/if}}
-</main>
+                {{/each}}
+            </div>
+        {{else}}
+            <p>There are currently no comments for this food.</p>
+        {{/if}}
+    </main>
+</div>
 
 <div class="modal fade" id="editFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editFoodLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
