@@ -3,12 +3,8 @@
 <main>
     <div class="text-center">
         <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-            data-bs-target="#editFoodModal">Edit</button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-            data-bs-target="#deleteFoodModal">Delete</button>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#commentFoodModal">Comment</button>
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editFoodModal">Edit Food</button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
     </div>
 
     <table class="table table-bordered caption-top">
@@ -38,95 +34,82 @@
     </table><br>
 
     <h3>Comments</h3>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button><br><br>
     {{#if commentList}}
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
-        {{#each commentList}}
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <blockquote class="blockquote">
-                        <p>{{this.text}}</p>
-                        <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a>
-                        </footer>
-                    </blockquote>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+            {{#each commentList}}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <blockquote class="blockquote">
+                                <p>{{this.text}}</p>
+                                <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
+                            </blockquote>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {{/each}}
         </div>
-        {{/each}}
-    </div>
     {{else}}
-    <p>There are currently no comments for this food.</p>
+        <p>There are currently no comments for this food.</p>
     {{/if}}
 </main>
 
-<div class="modal fade" id="editFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="editFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editFoodLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form method="post" action="/foods/{{food._id}}?_method=PUT">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Food</h5>
+                    <h5 class="modal-title" id="editFoodLabel">Edit Food</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <label for="name" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input id="name" class="form-control" type="text" name="name" value="{{food.name}}"
-                                placeholder="Name">
+                            <input id="name" class="form-control" type="text" name="name" value="{{food.name}}" placeholder="Name">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label">Serving Size</label>
                         <div class="col-sm-2">
                             <label for="servingSizeNumber" class="visually-hidden">Serving Size Number</label>
-                            <input id="servingSizeNumber" class="form-control" type="number" name="servingSizeNumber"
-                                value="{{food.servingSizeNumber}}" placeholder="#">
+                            <input id="servingSizeNumber" class="form-control" type="number" name="servingSizeNumber" value="{{food.servingSizeNumber}}" placeholder="#">
                             <div class="form-text">Number</div>
                         </div>
                         <div class="col-sm-4">
-                            <label for="servingSizeUnitSingular" class="visually-hidden">Serving Size Unit
-                                (Singular)</label>
-                            <input id="servingSizeUnitSingular" class="form-control" type="text"
-                                name="servingSizeUnitSingular" value="{{food.servingSizeUnitSingular}}"
-                                placeholder="Unit (Singular)">
+                            <label for="servingSizeUnitSingular" class="visually-hidden">Serving Size Unit (Singular)</label>
+                            <input id="servingSizeUnitSingular" class="form-control" type="text" name="servingSizeUnitSingular" value="{{food.servingSizeUnitSingular}}" placeholder="Unit (Singular)">
                             <div class="form-text">Unit (Singular)</div>
                         </div>
                         <div class="col-sm-4">
-                            <label for="servingSizeUnitPlural" class="visually-hidden">Serving Size Unit
-                                (Plural)</label>
-                            <input id="servingSizeUnitPlural" class="form-control" type="text"
-                                name="servingSizeUnitPlural" value="{{food.servingSizeUnitPlural}}"
-                                placeholder="Unit (Plural)">
+                            <label for="servingSizeUnitPlural" class="visually-hidden">Serving Size Unit (Plural)</label>
+                            <input id="servingSizeUnitPlural" class="form-control" type="text" name="servingSizeUnitPlural" value="{{food.servingSizeUnitPlural}}" placeholder="Unit (Plural)">
                             <div class="form-text">Unit (Plural)</div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="calories" class="col-sm-2 col-form-label">Calories</label>
                         <div class="col-sm-10">
-                            <input id="calories" class="form-control" type="number" name="calories"
-                                value="{{food.calories}}" placeholder="Calories">
+                            <input id="calories" class="form-control" type="number" name="calories" value="{{food.calories}}" placeholder="Calories">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="fat" class="col-sm-2 col-form-label">Fat</label>
                         <div class="col-sm-10">
-                            <input id="fat" class="form-control" type="number" name="fat" value="{{food.fat}}"
-                                placeholder="Fat">
+                            <input id="fat" class="form-control" type="number" name="fat" value="{{food.fat}}" placeholder="Fat">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="carbs" class="col-sm-2 col-form-label">Carbohydrates</label>
                         <div class="col-sm-10">
-                            <input id="carbs" class="form-control" type="number" name="carbs" value="{{food.carbs}}"
-                                placeholder="Carbohydrates">
+                            <input id="carbs" class="form-control" type="number" name="carbs" value="{{food.carbs}}" placeholder="Carbohydrates">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="protein" class="col-sm-2 col-form-label">Protein</label>
                         <div class="col-sm-10">
-                            <input id="protein" class="form-control" type="number" name="protein"
-                                value="{{food.protein}}" placeholder="Protein">
+                            <input id="protein" class="form-control" type="number" name="protein" value="{{food.protein}}" placeholder="Protein">
                         </div>
                     </div>
                 </div>
@@ -139,12 +122,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteFoodLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Food</h5>
+                <h5 class="modal-title" id="deleteFoodLabel">Delete Food</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -160,35 +142,19 @@
     </div>
 </div>
 
-<div class="modal fade" id="commentFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <form method="post" action="/comments">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add a Comment</h5>
+                    <h5 class="modal-title" id="addCommentLabel">Add Comment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-3">
-                        <label for="text" class="col-sm-2 col-form-label">Comment</label>
-                        <div class="col-sm-10">
-                            <input id="text" class="form-control" type="text" name="text" placeholder="Comment">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="userId" class="col-sm-2 col-form-label">User ID</label>
-                        <div class="col-sm-10">
-                            <input id="userId" class="form-control" type="text" name="userId" placeholder="UserId">
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="foodId" class="col-sm-2 col-form-label">Food ID</label>
-                        <div class="col-sm-10">
-                            <input id="foodId" class="form-control" type="text" name="foodId" value="{{food._id}}""
-                                placeholder=" foodId">
-                        </div>
-                    </div>
+                    <label for="text" class="visually-hidden">Text</label>
+                    <input type="hidden" id="foodId" name="foodId" value={{food._id}}>
+                    <input type="hidden" id="userId" name="userId" value="61a9b816e26e9c5ef413ef23">
+                    <textarea id="text" class="form-control" name="text" placeholder="Type your comment here." style="height: 100px"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

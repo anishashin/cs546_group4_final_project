@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
             commentInfo.userId,
             commentInfo.text
         );
-        res.status(200).json(newComment);
+        res.redirect('foods/' + commentInfo.foodId);
     } catch (e) {
         res.status(500).json({error: e.message});
     }
