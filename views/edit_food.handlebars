@@ -1,0 +1,64 @@
+<div class="container">
+    <h1 class="text-center">Edit Food</h1><br>
+
+    <main>
+        <form action="/foods/{{food._id}}?_method=PUT" method="post">
+            <div class="row mb-3">
+                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                    <input id="name" class="form-control" type="text" name="name" value="{{food.name}}" placeholder="Name" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Serving Size</label>
+                <div class="col-sm-2">
+                    <label for="servingSizeNumber" class="visually-hidden">Serving Size Number</label>
+                    <input id="servingSizeNumber" class="form-control" type="number" name="servingSizeNumber" value="{{food.servingSizeNumber}}" placeholder="#" required>
+                    <div class="form-text">Number</div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="servingSizeUnitSingular" class="visually-hidden">Serving Size Unit (Singular)</label>
+                    <input id="servingSizeUnitSingular" class="form-control" type="text" name="servingSizeUnitSingular" value="{{food.servingSizeUnitSingular}}" placeholder="Unit (Singular)" required>
+                    <div class="form-text">Unit (Singular)</div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="servingSizeUnitPlural" class="visually-hidden">Serving Size Unit (Plural)</label>
+                    <input id="servingSizeUnitPlural" class="form-control" type="text" name="servingSizeUnitPlural" value="{{food.servingSizeUnitPlural}}" placeholder="Unit (Plural)" required>
+                    <div class="form-text">Unit (Plural)</div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="calories" class="col-sm-2 col-form-label">Calories</label>
+                <div class="col-sm-10">
+                    <input id="calories" class="form-control" type="number" name="calories" value="{{food.calories}}" placeholder="Calories" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="fat" class="col-sm-2 col-form-label">Fat</label>
+                <div class="col-sm-10">
+                    <input id="fat" class="form-control" type="number" name="fat" value="{{food.fat}}" placeholder="Fat" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="carbs" class="col-sm-2 col-form-label">Carbohydrates</label>
+                <div class="col-sm-10">
+                    <input id="carbs" class="form-control" type="number" name="carbs" value="{{food.carbs}}" placeholder="Carbohydrates" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="protein" class="col-sm-2 col-form-label">Protein</label>
+                <div class="col-sm-10">
+                    <input id="protein" class="form-control" type="number" name="protein" value="{{food.protein}}" placeholder="Protein" required>
+                </div>
+            </div>
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/foods/{{food._id}}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+        
+        {{#if error}}
+            <div class="alert alert-danger text-center" role="alert">{{error}}</div>
+        {{/if}}
+    </main>
+</div>
