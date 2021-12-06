@@ -63,7 +63,9 @@ router.post('/', async (req, res) => {
             commentInfo.userId,
             commentInfo.text
         );
-        res.redirect('foods/' + commentInfo.foodId);
+        const user = await userData.get(newComment.userId);
+        newComment.userName = user.firstName + ' ' + user.lastName;
+        res.render('partials/comment', {layout: null, ...newComment});
     } catch (e) {
         res.status(500).json({error: e.message});
     }

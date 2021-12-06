@@ -45,18 +45,9 @@
 
         {{#if commentList}}
             <br>
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4" id="commentList">
                 {{#each commentList}}
-                    <div class="col">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <blockquote class="blockquote">
-                                    <p>{{this.text}}</p>
-                                    <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
-                                </blockquote>
-                            </div>
-                        </div>
-                    </div>
+                    {{> comment }}
                 {{/each}}
             </div>
         {{else}}
