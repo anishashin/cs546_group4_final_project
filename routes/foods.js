@@ -59,6 +59,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/json/:id', async (req, res) => {
+    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
+        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        return;
+    }
+    try {
+        const food = await foodData.get(req.params.id);
+        res.status(200).json({food: food});
+    } catch (e) {
+        res.status(404).json({error: 'Food not found.'});
+    }
+});
+
 router.post('/', async (req, res) => {
     let foodInfo = req.body;
     if(!foodInfo) {

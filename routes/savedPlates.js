@@ -8,6 +8,14 @@ const userData = data.users;
 router.get('/', async (req, res) => {
     try {
         const foodList = await foodData.getAll();
+        for(let food of foodList) {
+            if(food.servingSizeNumber <= 1) {
+                food.servingSizeUnit = food.servingSizeUnitSingular;
+            }
+            else {
+                food.servingSizeUnit = food.servingSizeUnitPlural;
+            }
+        }
         res.status(200).render('build_plate', {title: 'Build Your Own Plate', foodList: foodList});
     } catch (e) {
         res.status(500).json({error: e.message});

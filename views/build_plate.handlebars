@@ -18,19 +18,19 @@
                 <tbody>
                     <tr>
                         <th scope="row">Total Calories</th>
-                        <td></td>
+                        <td id="totalCalories"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Fat</th>
-                        <td></td>
+                        <td id="totalFat"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Carbohydrates</th>
-                        <td></td>
+                        <td id="totalCarbs"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Protein</th>
-                        <td></td>
+                        <td id="totalProtein"></td>
                     </tr>
                 </tbody>
             </table>
@@ -41,6 +41,6 @@
 <template id="foodDropdownTemplate">
     <option selected>Select a food</option>
     {{#each foodList}}
-        <option value="{{_id}}">{{name}}</option>
+        <option value="{{_id}}">{{name}} ({{servingSizeNumber}} {{servingSizeUnit}})</option>
     {{/each}}
 </template>

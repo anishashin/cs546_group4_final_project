@@ -22,7 +22,7 @@
         counter += 1;
     });
 
-    $('#foodDiv').on('change', function(event) {
+    $('#foodDiv').on('keyup change', function(event) {
         event.preventDefault();
         calculate();
     });
@@ -34,6 +34,24 @@
         let totalProtein = 0;
         for(let i = 1; i < counter; i++) {
             let foodId = $(`#food${i}`).val();
+            let servings = parseFloat($(`#servings${i}`).val());
+            if((foodId && typeof foodId === 'string' && foodId.trim() !== '' && foodId !== 'Select a food') 
+                && (servings && typeof servings === 'number' && !isNaN(servings) && servings > 0)) {
+                var requestConfig = {
+                    method: 'GET',
+                    url: '/foods/json/' + foodId
+                };
+                $.ajax(requestConfig).then(function(response) {
+                    totalCalories += response.food.calories * servings;
+                    totalFat += response.food.fat * servings;
+                    totalCarbs += response.food.carbs * servings;
+                    totalProtein += response.food.protein * servings;
+                    $('#totalCalories').html(Math.round(totalCalories * 10) / 10);
+                    $('#totalFat').html(Math.round(totalFat * 10) / 10);
+                    $('#totalCarbs').html(Math.round(totalCarbs * 10) / 10);
+                    $('#totalProtein').html(Math.round(totalProtein * 10) / 10);
+                });
+            }
         }
     }
 
