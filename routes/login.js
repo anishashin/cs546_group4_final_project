@@ -12,6 +12,8 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  let username = req.body["username"];
+  console.log(username);
   let userInfo = req.body;
   if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
     res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
@@ -24,8 +26,8 @@ router.post('/', async (req, res) => {
   try {
     const result = await userData.check(userInfo.username, userInfo.password);
     if(result.authenticated === true) {
-      req.session.user = {username: userInfo.username};
-      res.redirect('/');
+      req.session.user = {username: username, userId: result.id, firstName: result.firstName, lastName: result.lastName, isAdmin: result.isAdmin, savedPlates: result.savedPlates};
+      res.redirect('/home');
     }
     else {
       res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});

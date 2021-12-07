@@ -15,10 +15,16 @@
                     <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
                     <li class="nav-item"><a class="nav-link" href="/savedPlates">Build Your Own Plate</a></li>
                 </ul>
-                <ul class="nav justify-content-end">
-                    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
-                </ul>
+                {{#if username}}
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item"><a class="nav-link" href="/users/{{ userId }}">User</a></li>
+                    </ul>
+                {{else}}
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                    </ul>
+                {{/if}}
             </div>
         </nav>
         {{{body}}}

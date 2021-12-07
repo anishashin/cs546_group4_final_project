@@ -26,9 +26,9 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use('/private', async (req, res, next) => {
+app.use('/home', async (req, res, next) => {
   if(!req.session.user) {
-    res.status(403).json({error: e.message});
+    return res.redirect('/');
   } else {
     next();
   }
