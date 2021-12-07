@@ -7,8 +7,8 @@ const userData = data.users;
 
 router.get('/', async (req, res) => {
     try {
-        const savedPlateList = await savedPlateData.getAll();
-        res.status(200).json(savedPlateList);
+        const foodList = await foodData.getAll();
+        res.status(200).render('build_plate', {title: 'Build Your Own Plate', foodList: foodList});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
