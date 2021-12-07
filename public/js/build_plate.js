@@ -5,19 +5,36 @@
 
     $('#addFoodButton').on('click', function(event) {
         event.preventDefault();
-        
-        let foodInput = 
+        let foodDropdown =
         `<div class="row">
-            <label for="foodDataList${counter}" class="form-label">Food ${counter}</label>
             <div class="col-8">
-                <input id="foodDataList${counter}" class="form-control" list="foodOptions" placeholder="Search for a food...">
+                <select id="food${counter}" class="form-select" aria-label="Select Food">`;
+        foodDropdown += $('#foodDropdownTemplate').html();
+        foodDropdown +=
+                `</select>
             </div>
             <div class="col-4">
-                <label for="servingSizeNumber${counter}" class="visually-hidden">Number of Servings</label>
-                <input id="servingSizeNumber${counter}" class="form-control" placeholder="Number of Servings">
+                <label for="servings${counter}" class="visually-hidden">Number of Servings</label>
+                <input id="servings${counter}" class="form-control" placeholder="Number of Servings">
             </div>
         </div><br>`;
-        $('#foodDiv').append(foodInput);
+        $('#foodDiv').append(foodDropdown);
         counter += 1;
     });
+
+    $('#foodDiv').on('change', function(event) {
+        event.preventDefault();
+        calculate();
+    });
+    
+    function calculate() {
+        let totalCalories = 0;
+        let totalFat = 0;
+        let totalCarbs = 0;
+        let totalProtein = 0;
+        for(let i = 1; i < counter; i++) {
+            let foodId = $(`#food${i}`).val();
+        }
+    }
+
 })(window.jQuery);

@@ -7,12 +7,7 @@
 
     <div class="row">
         <div class="col">
-            <datalist id="foodOptions">
-                {{#each foodList}}
-                    <option value="{{name}}"></option>
-                {{/each}}
-            </datalist>
-            <div id="foodDiv"></div>
+            <div id="foodDiv" class="form-group"></div>
             <div class="d-grid gap-2">
                 <button id="addFoodButton" class="btn btn-outline-primary" type="button">Add Food</button>
             </div>
@@ -42,3 +37,10 @@
         </div>
     </div>
 </div>
+
+<template id="foodDropdownTemplate">
+    <option selected>Select a food</option>
+    {{#each foodList}}
+        <option value="{{_id}}">{{name}}</option>
+    {{/each}}
+</template>
