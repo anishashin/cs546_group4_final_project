@@ -17,7 +17,8 @@ router.get('/home', async (req, res) => {
         firstName: req.session.user.firstName,
         lastName: req.session.user.lastName,
         isAdmin: req.session.user.isAdmin,
-        savedPlates: req.session.user.savedPlates
+        savedPlates: req.session.user.savedPlates,
+        authenticated: req.session.user.authenticated
     });
     } catch (e) {
         res.status(500).json({error: e.message});
