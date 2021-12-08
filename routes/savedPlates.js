@@ -55,14 +55,27 @@ router.get('/:id', async (req, res) => {
         savedPlate.userName = user.firstName + ' ' + user.lastName;
         for(let i = 0; i <savedPlate.foods.length; i++) {
             savedPlate.foods[i] = await foodData.get(savedPlate.foods[i]);
-            if(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] <= 1) {
-                savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
+            if((Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) <= 1) {
+                savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
             }
             else {
-                savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
+                savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
             }
         }
         res.status(200).render('saved_plate', {title: savedPlate.title, savedPlate: savedPlate});
+    } catch (e) {
+        res.status(404).json({error: 'Saved plate not found.'});
+    }
+});
+
+router.get('/json/:id', async (req, res) => {
+    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
+        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        return;
+    }
+    try {
+        const savedPlate = await savedPlateData.get(req.params.id);
+        res.status(200).json({savedPlate: savedPlate});
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
     }

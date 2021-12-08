@@ -25,11 +25,11 @@ router.get('/:id', async (req, res) => {
         for(let savedPlate of savedPlateList) {
             for(let i = 0; i <savedPlate.foods.length; i++) {
                 savedPlate.foods[i] = await foodData.get(savedPlate.foods[i]);
-                if(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] <= 1) {
-                    savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
+                if((Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) <= 1) {
+                    savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
                 }
                 else {
-                    savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
+                    savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
                 }
             }
         }

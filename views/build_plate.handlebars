@@ -65,7 +65,7 @@
 </div>
 
 <template id="foodDropdownTemplate">
-    <option selected>Select a food</option>
+    <option selected disabled hidden>Select a food</option>
     {{#each foodList}}
         <option value="{{_id}}">{{name}} ({{servingSizeNumber}} {{servingSizeUnit}})</option>
     {{/each}}

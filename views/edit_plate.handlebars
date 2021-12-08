@@ -8,33 +8,18 @@
             <h2>Foods</h2>
         </div>
         <div class="col-2 text-end">
-            <button id="savePlateButton" type="button" class="btn btn-success">Save Changes</button>
+            <button id="edit_savePlateButton" type="button" class="btn btn-success">Save Changes</button>
         </div>
     </div>
     
+    <input type="hidden" id="edit_savedPlateId" name="savedPlateId" value={{savedPlate._id}}>
+
     <div class="row">
         <div class="col">
-            <div id="foodDiv" class="form-group">
-                {{#each savedPlate.foods}}
-                    <div class="row">
-                        <div class="col-8">
-                            <select id="food{{savedPlate.foods}}" class="form-select" aria-label="Select Food">
-                                <option selected>Select a food</option>
-                                {{#each foodList}}
-                                    <option value="{{_id}}">{{name}} ({{servingSizeNumber}} {{servingSizeUnit}})</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <label for="servings{{savedPlate.foods}}" class="visually-hidden">Number of Servings</label>
-                            <input id="servings{{savedPlate.foods}}" class="form-control" placeholder="Number of Servings">
-                        </div>
-                    </div><br>
-                {{/each}}
-            </div>
-            <div id="invalidInputsError"></div><br>
+            <div id="edit_foodDiv" class="form-group"></div>
+            <div id="edit_invalidInputsError"></div><br>
             <div class="d-grid gap-2">
-                <button id="addFoodButton" class="btn btn-outline-primary" type="button">Add Food</button>
+                <button id="edit_addFoodButton" class="btn btn-outline-primary" type="button">Add Food</button>
             </div>
         </div>
         <div class="col">
@@ -43,19 +28,19 @@
                 <tbody>
                     <tr>
                         <th scope="row">Total Calories</th>
-                        <td id="totalCalories"></td>
+                        <td id="edit_totalCalories"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Fat</th>
-                        <td id="totalFat"></td>
+                        <td id="edit_totalFat"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Carbohydrates</th>
-                        <td id="totalCarbs"></td>
+                        <td id="edit_totalCarbs"></td>
                     </tr>
                     <tr>
                         <th scope="row">Total Protein</th>
-                        <td id="totalProtein"></td>
+                        <td id="edit_totalProtein"></td>
                     </tr>
                 </tbody>
             </table>
@@ -63,8 +48,8 @@
     </div>
 </div>
 
-<template id="foodDropdownTemplate">
-    <option selected>Select a food</option>
+<template id="edit_foodDropdownTemplate">
+    <option selected disabled hidden>Select a food</option>
     {{#each foodList}}
         <option value="{{_id}}">{{name}} ({{servingSizeNumber}} {{servingSizeUnit}})</option>
     {{/each}}
