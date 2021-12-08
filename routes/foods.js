@@ -10,6 +10,18 @@ router.get('/', async (req, res) => {
         const foodList = await foodData.getAll();
         res.status(200).render('foodlistings', {
             title: 'Food List',
+            foodList: foodList
+        });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+router.get('/foods', async (req, res) => {
+    try {
+        const foodList = await foodData.getAll();
+        res.status(200).render('foodlistings', {
+            title: 'Food List',
             foodList: foodList,
             username: req.session.user.username,
             userId: req.session.user.userId,
@@ -65,6 +77,34 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    if (!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
+        res.status(400).json({ error: 'Id must be a non-empty string containing more than just spaces.' });
+        return;
+    }
+    try {
+        const food = await foodData.get(req.params.id);
+        if (food.servingSizeNumber <= 1) {
+            food.servingSizeUnit = food.servingSizeUnitSingular;
+        }
+        else {
+            food.servingSizeUnit = food.servingSizeUnitPlural;
+        }
+        const commentList = await commentData.getAll(food._id);
+        for (let comment of commentList) {
+            let user = await userData.get(comment.userId);
+            comment.userName = user.firstName + ' ' + user.lastName;
+        }
+        res.status(200).render('individualfood', {
+            title: food.name,
+            food: food,
+            commentList: commentList
+        });
+    } catch (e) {
+        res.status(404).json({ error: 'Food not found.' });
+    }
+});
+
+router.get('/foods/:id', async (req, res) => {
     if (!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).json({ error: 'Id must be a non-empty string containing more than just spaces.' });
         return;

@@ -4,8 +4,10 @@
     <main>
         <div class="text-center">
             <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
-            <a href="/foods/edit/{{food._id}}" class="btn btn-secondary">Edit Food</a>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
+            {{#if isAdmin}}
+                <a href="/foods/edit/{{food._id}}" class="btn btn-secondary">Edit Food</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
+            {{/if}}
         </div>
 
         <table class="table table-bordered caption-top">
@@ -39,7 +41,9 @@
                 <h3>Comments</h3>
             </div>
             <div class="col-2 text-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+                {{#if authenticated}}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+                {{/if}}
             </div>
         </div>
 
@@ -55,6 +59,7 @@
         {{/if}}
     </main>
 </div>
+
 
 <div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteFoodLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -76,6 +81,7 @@
     </div>
 </div>
 
+
 <div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -87,7 +93,7 @@
                 <div class="modal-body">
                     <label for="text" class="visually-hidden">Text</label>
                     <input type="hidden" id="foodId" name="foodId" value={{food._id}}>
-                    <input type="hidden" id="userId" name="userId">
+                    <input type="hidden" id="userId" name="userId" value={{userId}}>
                     <textarea id="text" class="form-control" name="text" placeholder="Type your comment here." style="height: 100px" required></textarea>
                     <div id="error"></div>
                 </div>

@@ -13,15 +13,17 @@
                 <ul class="nav">
                     {{#if authenticated}}
                         <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/foods/foods">Food List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/savedPlates/savedPlates">Build Your Own Plate</a></li>
                     {{else}}
                         <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/savedPlates">Build Your Own Plate</a></li>
                     {{/if}}
-                    <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/savedPlates">Build Your Own Plate</a></li>
                 </ul>
                 {{#if authenticated}}
                     <ul class="nav justify-content-end">
-                        <li class="nav-item"><a class="nav-link" href="/users/{{ userId }}">User</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/users/users/{{ userId }}">User</a></li>
                     </ul>
                 {{else}}
                     <ul class="nav justify-content-end">

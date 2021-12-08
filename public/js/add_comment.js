@@ -4,7 +4,7 @@
     $('#addCommentForm').submit((event) => {
         event.preventDefault();
         const foodId = $('#foodId').val();
-        const userId = "61a9b816e26e9c5ef413ef23";
+        const userId = $('#userId').val();;
         const text = $('#text').val();
         if(!text || text.trim() === '') {
             $('#error').hidden = false;

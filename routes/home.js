@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 router.get('/home', async (req, res) => {
     try {
         res.status(200).render('home', {
-            title: 'Logged In',
+            title: 'Home',
             username: req.session.user.username,
             userId: req.session.user.userId,
             firstName: req.session.user.firstName,
