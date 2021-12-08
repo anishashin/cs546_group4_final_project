@@ -101,7 +101,7 @@ router.post('/', async (req, res) => {
             savedPlateInfo.foods,
             savedPlateInfo.servings
         );
-        res.status(200).json(newSavedPlate);
+        res.status(200).send({result: 'redirect', url: '/savedPlates/' + newSavedPlate._id})
     } catch (e) {
         res.status(500).json({error: e.message});
     }
