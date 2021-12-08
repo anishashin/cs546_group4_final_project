@@ -3,11 +3,9 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        res.status(200).render('home', {
-            title: 'Home',
-        });
+        res.status(200).render('home', {title: 'Home'});
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        res.status(500).json({error: e.message});
     }
 });
 
@@ -24,9 +22,8 @@ router.get('/home', async (req, res) => {
             authenticated: req.session.user.authenticated
         });
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        res.status(500).json({error: e.message});
     }
 });
-
 
 module.exports = router;
