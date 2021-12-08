@@ -24,6 +24,7 @@
 			};
 			$.ajax(requestConfig).then(function(response) {
                 $("#addCommentModal").modal('hide');
+                $('#noComments').hide();
                 $('#commentList').append($(response));
                 $('#addCommentForm').trigger('reset');
 			});
