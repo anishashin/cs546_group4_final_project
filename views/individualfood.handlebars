@@ -43,16 +43,16 @@
             </div>
         </div>
 
-        {{#if commentList}}
-            <br>
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4" id="commentList">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4" id="commentList">
+            {{#if commentList}}
+                <br>
                 {{#each commentList}}
                     {{> comment }}
                 {{/each}}
-            </div>
-        {{else}}
-            <p>There are currently no comments for this food.</p>
-        {{/if}}
+            {{else}}
+                <p id="noComments">No comments.</p>
+            {{/if}}
+        </div>
     </main>
 </div>
 
@@ -79,7 +79,7 @@
 <div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/comments" id="addCommentForm">
+            <form id="addCommentForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addCommentLabel">Add Comment</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
