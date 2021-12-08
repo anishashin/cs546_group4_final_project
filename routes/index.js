@@ -5,6 +5,7 @@ const commentRoutes = require('./comments');
 const loginRoutes = require('./login');
 const signupRoutes = require('./signup');
 const homeRoutes = require('./home');
+const logoutRoutes = require('./logout');
 
 const constructorMethod = (app) => {
   app.use('/users', userRoutes);
@@ -13,6 +14,7 @@ const constructorMethod = (app) => {
   app.use('/comments', commentRoutes);
   app.use('/login', loginRoutes);
   app.use('/signup', signupRoutes);
+  app.use('/logout', logoutRoutes);
   app.use('/', homeRoutes);
   
   app.use('*', (req, res) => {

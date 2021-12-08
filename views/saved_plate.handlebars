@@ -1,12 +1,20 @@
 <div class="container">
     <h1>{{savedPlate.title}}</h1>
     <div class="row">
-        <div class="col-9">
-            <h2>By: <a href="/users/{{savedPlate.userId}}">{{savedPlate.userName}}</a></h2>
-        </div>
+        {{#if authenticated}}
+            <div class="col-9">
+                <h2>By: <a href="/users/users/{{savedPlate.userId}}">{{savedPlate.userName}}</a></h2>
+            </div>
+        {{else}}
+            <div class="col-9">
+                <h2>By: <a href="/users/{{savedPlate.userId}}">{{savedPlate.userName}}</a></h2>
+            </div>
+        {{/if}}
         <div class="col-3 text-end">
-            <a href="/savedPlates/edit/{{savedPlate._id}}" class="btn btn-secondary">Edit Saved Plate</a>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSavedPlateModal">Delete Saved Plate</button>
+            {{#if authenticated}}
+                <a href="/savedPlates/edit/{{savedPlate._id}}" class="btn btn-secondary">Edit Saved Plate</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSavedPlateModal">Delete Saved Plate</button>
+            {{/if}}
         </div>
     </div><br>
 
@@ -15,10 +23,18 @@
             <div class="col">
                 <h3>Foods</h3>
                 <ul>
-                    {{#if savedPlate.foods}}
-                        {{#each savedPlate.foods}}
-                            <li><a href="/foods/{{_id}}">{{name}}</a>, {{servings}}</li>
-                        {{/each}}
+                    {{#if authenticated}}
+                        {{#if savedPlate.foods}}
+                            {{#each savedPlate.foods}}
+                                <li><a href="/foods/foods/{{_id}}">{{name}}</a>, {{servings}}</li>
+                            {{/each}}
+                        {{/if}}
+                    {{else}}
+                        {{#if savedPlate.foods}}
+                            {{#each savedPlate.foods}}
+                                <li><a href="/foods/{{_id}}">{{name}}</a>, {{servings}}</li>
+                            {{/each}}
+                        {{/if}}
                     {{/if}}
                 </ul>
             </div>
