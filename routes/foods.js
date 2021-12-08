@@ -256,7 +256,7 @@ router.put('/:id', async (req, res) => {
     try {
         const food = await foodData.get(req.params.id);
     } catch (e) {
-        res.status(404).json({ error: 'Food not found.' });
+        res.status(404).json({error: 'Food not found.'});
         return;
     }
     try {
