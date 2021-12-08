@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
     const result = await userData.check(userInfo.username, userInfo.password);
     if(result.authenticated === true) {
       req.session.user = {authenticated: result.authenticated, username: userInfo.username, userId: result.id, firstName: result.firstName, lastName: result.lastName, isAdmin: result.isAdmin, savedPlates: result.savedPlates};
-      res.redirect('/home');
+      res.redirect('/');
     }
     else {
       res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});

@@ -16,34 +16,11 @@ router.get('/', async (req, res) => {
                 food.servingSizeUnit = food.servingSizeUnitPlural;
             }
         }
-        res.status(200).render('build_plate', {title: 'Build Your Own Plate', foodList: foodList});
-    } catch (e) {
-        res.status(500).json({error: e.message});
-    }
-});
-
-router.get('/savedPlates', async (req, res) => {
-    try {
-        const foodList = await foodData.getAll();
-        for(let food of foodList) {
-            if(food.servingSizeNumber <= 1) {
-                food.servingSizeUnit = food.servingSizeUnitSingular;
-            }
-            else {
-                food.servingSizeUnit = food.servingSizeUnitPlural;
-            }
-        }
         res.status(200).render('build_plate', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
             title: 'Build Your Own Plate',
-            foodList: foodList,
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
-        });
+            foodList: foodList});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
@@ -89,41 +66,11 @@ router.get('/:id', async (req, res) => {
                 savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
             }
         }
-        res.status(200).render('saved_plate', {title: savedPlate.title, savedPlate: savedPlate});
-    } catch (e) {
-        res.status(404).json({error: 'Saved plate not found.'});
-    }
-});
-
-router.get('/savedPlates/:id', async (req, res) => {
-    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    try {
-        const savedPlate = await savedPlateData.get(req.params.id);
-        const user = await userData.get(savedPlate.userId);
-        savedPlate.userName = user.firstName + ' ' + user.lastName;
-        for(let i = 0; i < savedPlate.foods.length; i++) {
-            savedPlate.foods[i] = await foodData.get(savedPlate.foods[i]);
-            if((Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) <= 1) {
-                savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitSingular;
-            }
-            else {
-                savedPlate.foods[i].servings = (Math.round(savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] * 10) / 10) + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
-            }
-        }
         res.status(200).render('saved_plate', {
-            title: savedPlate.title,
-            savedPlate: savedPlate,
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
-        });
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: savedPlate.title, 
+            savedPlate: savedPlate});
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
     }

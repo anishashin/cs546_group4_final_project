@@ -5,28 +5,6 @@ const commentData = data.comments;
 const foodData = data.foods;
 const userData = data.users;
 
-router.get('/', async (req, res) => {
-    try {
-        const commentList = await commentData.getAll();
-        res.status(200).json(commentList);
-    } catch (e) {
-        res.status(500).json({error: e.message});
-    }
-});
-
-router.get('/:id', async (req, res) => {
-    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    try {
-        const comment = await commentData.get(req.params.id);
-        res.status(200).json(comment);
-    } catch (e) {
-        res.status(404).json({error: 'Comment not found.'});
-    }
-});
-
 router.post('/', async (req, res) => {
     let commentInfo = req.body;
     if(!commentInfo) {
@@ -66,56 +44,6 @@ router.post('/', async (req, res) => {
         const user = await userData.get(newComment.userId);
         newComment.userName = user.firstName + ' ' + user.lastName;
         res.render('partials/comment', {layout: null, ...newComment});
-    } catch (e) {
-        res.status(500).json({error: e.message});
-    }
-});
-
-router.put('/:id', async (req, res) => {
-    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    let commentInfo = req.body;
-    if(!commentInfo) {
-        res.status(400).json({error: 'You must provide data to edit a comment.'});
-        return;
-    }
-    if(!commentInfo.text || typeof commentInfo.text !== 'string' || commentInfo.text.trim() === '') {
-        res.status(400).json({error: 'Text must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    try {
-        const comment = await commentData.get(req.params.id);
-    } catch (e) {
-        res.status(404).json({error: 'Comment not found.'});
-        return;
-    }
-    try {
-        const updatedComment = await commentData.update(
-            req.params.id,
-            commentInfo.text
-        );
-        res.status(200).json(updatedComment);
-    } catch (e) {
-        res.status(500).json({error: e.message});
-    }
-});
-
-router.delete('/:id', async (req, res) => {
-    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    try {
-        const comment = await commentData.get(req.params.id);
-    } catch (e) {
-        res.status(404).json({error: 'Comment not found.'});
-        return;
-    }
-    try {
-        const result = await commentData.remove(req.params.id);
-        res.status(200).json(result);
     } catch (e) {
         res.status(500).json({error: e.message});
     }

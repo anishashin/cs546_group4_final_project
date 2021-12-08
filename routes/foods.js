@@ -8,26 +8,11 @@ const userData = data.users;
 router.get('/', async (req, res) => {
     try {
         const foodList = await foodData.getAll();
-        res.status(200).render('foodlistings', {title: 'Food List', foodList: foodList});
-    } catch (e) {
-        res.status(500).json({error: e.message});
-    }
-});
-
-router.get('/foods', async (req, res) => {
-    try {
-        const foodList = await foodData.getAll();
         res.status(200).render('foodlistings', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
             title: 'Food List',
-            foodList: foodList,
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
-        });
+            foodList: foodList});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
@@ -36,14 +21,9 @@ router.get('/foods', async (req, res) => {
 router.get('/add', async (req, res) => {
     try {
         res.status(200).render('add_food', {
-            title: 'Add Food',
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food'
         });
     } catch (e) {
         res.status(500).json({error: e.message});
@@ -58,15 +38,10 @@ router.get('/edit/:id', async (req, res) => {
     try {
         const foodInfo = await foodData.get(req.params.id);
         res.status(200).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
             title: 'Edit Food',
-            foodInfo: foodInfo,
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
+            foodInfo: foodInfo
         });
     } catch (e) {
         res.status(404).json({error: 'Food not found.'});
@@ -91,42 +66,12 @@ router.get('/:id', async (req, res) => {
             let user = await userData.get(comment.userId);
             comment.userName = user.firstName + ' ' + user.lastName;
         }
-        res.status(200).render('individualfood', {title: food.name, food: food, commentList: commentList});
-    } catch (e) {
-        res.status(404).json({error: 'Food not found.'});
-    }
-});
-
-router.get('/foods/:id', async (req, res) => {
-    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
-        return;
-    }
-    try {
-        const food = await foodData.get(req.params.id);
-        if(food.servingSizeNumber <= 1) {
-            food.servingSizeUnit = food.servingSizeUnitSingular;
-        }
-        else {
-            food.servingSizeUnit = food.servingSizeUnitPlural;
-        }
-        const commentList = await commentData.getAll(food._id);
-        for(let comment of commentList) {
-            let user = await userData.get(comment.userId);
-            comment.userName = user.firstName + ' ' + user.lastName;
-        }
         res.status(200).render('individualfood', {
-            title: food.name,
-            food: food,
-            commentList: commentList,
-            username: req.session.user.username,
-            userId: req.session.user.userId,
-            firstName: req.session.user.firstName,
-            lastName: req.session.user.lastName,
-            isAdmin: req.session.user.isAdmin,
-            savedPlates: req.session.user.savedPlates,
-            authenticated: req.session.user.authenticated
-        });
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: food.name, 
+            food: food, 
+            commentList: commentList});
     } catch (e) {
         res.status(404).json({error: 'Food not found.'});
     }

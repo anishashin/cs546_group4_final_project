@@ -3,11 +3,7 @@
         <div class="card-body">
             <blockquote class="blockquote">
                 <p>{{this.text}}</p>
-                {{#if authenticated}}
-                    <footer class="blockquote-footer"><a href="/users/users/{{this.userId}}">{{this.userName}}</a></footer>
-                {{else}}
-                    <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
-                {{/if}}
+                <footer class="blockquote-footer"><a href="/users/{{this.userId}}">{{this.userName}}</a></footer>
             </blockquote>
         </div>
     </div>

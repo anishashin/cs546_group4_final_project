@@ -14,42 +14,22 @@
         <form>
             <input id="search" class="form-control" type="text" placeholder="Search for foods..." aria-label="search">
         </form><br>
-        {{#if authenticated}}
-            {{#if foodList}}
-                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 text-end">
-                    {{#each foodList}}
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="../../public/images/food.png" class="card-img-top" alt="{{name}}">
-                                <div class="card-body">
-                                    <h2 class="card-title"><a href="/foods/foods/{{_id}}">{{name}}</a></h2>
-                                    <p class="card-text">{{calories}} cal</p>
-                                </div>
+        {{#if foodList}}
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 text-end">
+                {{#each foodList}}
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="../../public/images/food.png" class="card-img-top" alt="{{name}}">
+                            <div class="card-body">
+                                <h2 class="card-title"><a href="/foods/{{_id}}">{{name}}</a></h2>
+                                <p class="card-text">{{calories}} cal</p>
                             </div>
                         </div>
-                    {{/each}}
-                </div>
-            {{else}}
-                <p>There are no foods currently in the database.</p>
-            {{/if}}
+                    </div>
+                {{/each}}
+            </div>
         {{else}}
-            {{#if foodList}}
-                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4 text-end">
-                    {{#each foodList}}
-                        <div class="col">
-                            <div class="card h-100">
-                                <img src="../../public/images/food.png" class="card-img-top" alt="{{name}}">
-                                <div class="card-body">
-                                    <h2 class="card-title"><a href="/foods/{{_id}}">{{name}}</a></h2>
-                                    <p class="card-text">{{calories}} cal</p>
-                                </div>
-                            </div>
-                        </div>
-                    {{/each}}
-                </div>
-            {{else}}
-                <p>There are no foods currently in the database.</p>
-            {{/if}}
+            <p>There are no foods currently in the database.</p>
         {{/if}}
     </main>
 </div>
