@@ -34,14 +34,6 @@ app.use('/home', async (req, res, next) => {
   }
 });
 
-app.use('/foods/new', async (req, res, next) => {
-  if(!req.session.user) {
-    res.status(403).json({error: e.message});
-  } else {
-    next();
-  }
-});
-
 configRoutes(app);
 
 app.listen(3000, () => {
