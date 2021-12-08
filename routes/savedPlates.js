@@ -22,6 +22,28 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/edit/:id', async (req, res) => {
+    if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
+        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        return;
+    }
+    try {
+        const foodList = await foodData.getAll();
+        for(let food of foodList) {
+            if(food.servingSizeNumber <= 1) {
+                food.servingSizeUnit = food.servingSizeUnitSingular;
+            }
+            else {
+                food.servingSizeUnit = food.servingSizeUnitPlural;
+            }
+        }
+        const savedPlate = await savedPlateData.get(req.params.id);
+        res.status(200).render('edit_plate', {title: 'Edit Saved Plate', foodList: foodList, savedPlate: savedPlate});
+    } catch (e) {
+        res.status(404).json({error: 'Saved plate not found.'});
+    }
+});
+
 router.get('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
