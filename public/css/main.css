@@ -1,4 +1,53 @@
+
 .img-thumbnail {
     width: 200px;
     height: auto;
+}
+
+.nav_icons{
+    margin-right: 5pt;
+}
+
+#navbar{
+    margin-bottom: 20px;
+}
+
+.carousel-inner img {
+    display: block;
+    margin: auto;
+    width: 95%;
+    max-height: 800px;
+}
+
+.carousel-caption{
+    background-color: rgba(189, 197, 197, 0.342);
+}
+
+#demo{
+    display: block;
+    margin: auto;
+    background-color:rgb(255, 255, 246);
+    margin-top: -20px;
+}
+
+#carousel-control-left{
+    margin-left: 1%;
+}
+
+#carousel-control-right{
+    margin-right: 1%;
+}
+
+.card-img-top{
+    display: block;
+    margin: auto;
+    width: 80%;
+    height: 80%;
+}
+
+.container{
+    margin-top: 40px;
+    border-radius:30px;
+    padding:30px;
+    background-color: #FDFBF5;
 }
