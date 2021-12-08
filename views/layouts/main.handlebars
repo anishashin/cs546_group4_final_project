@@ -11,7 +11,11 @@
         <nav class="navbar">
             <div class="container-fluid">
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    {{#if authenticated}}
+                        <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+                    {{else}}
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    {{/if}}
                     <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
                     <li class="nav-item"><a class="nav-link" href="/savedPlates">Build Your Own Plate</a></li>
                 </ul>

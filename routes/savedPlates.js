@@ -16,7 +16,16 @@ router.get('/', async (req, res) => {
                 food.servingSizeUnit = food.servingSizeUnitPlural;
             }
         }
-        res.status(200).render('build_plate', {title: 'Build Your Own Plate', foodList: foodList});
+        res.status(200).render('build_plate', {title: 'Build Your Own Plate', 
+        foodList: foodList,
+        username: req.session.user.username,
+        userId: req.session.user.userId,
+        firstName: req.session.user.firstName,
+        lastName: req.session.user.lastName,
+        isAdmin: req.session.user.isAdmin,
+        savedPlates: req.session.user.savedPlates,
+        authenticated: req.session.user.authenticated
+    });
     } catch (e) {
         res.status(500).json({error: e.message});
     }
@@ -40,7 +49,16 @@ router.get('/:id', async (req, res) => {
                 savedPlate.foods[i].servings = savedPlate.foods[i].servingSizeNumber * savedPlate.servings[i] + ' ' + savedPlate.foods[i].servingSizeUnitPlural;
             }
         }
-        res.status(200).render('saved_plate', {title: savedPlate.title, savedPlate: savedPlate});
+        res.status(200).render('saved_plate', {title: savedPlate.title, 
+            savedPlate: savedPlate,
+            username: req.session.user.username,
+            userId: req.session.user.userId,
+            firstName: req.session.user.firstName,
+            lastName: req.session.user.lastName,
+            isAdmin: req.session.user.isAdmin,
+            savedPlates: req.session.user.savedPlates,
+            authenticated: req.session.user.authenticated
+        });
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
     }

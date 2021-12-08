@@ -33,7 +33,17 @@ router.get('/:id', async (req, res) => {
                 }
             }
         }
-        res.status(200).render('user', {title: 'User Profile', user: user, savedPlateList: savedPlateList});
+        res.status(200).render('user', {title: 'User Profile', 
+        user: user, 
+        savedPlateList: savedPlateList,
+        username: req.session.user.username,
+        userId: req.session.user.userId,
+        firstName: req.session.user.firstName,
+        lastName: req.session.user.lastName,
+        isAdmin: req.session.user.isAdmin,
+        savedPlates: req.session.user.savedPlates,
+        authenticated: req.session.user.authenticated
+    });
     } catch (e) {
         res.status(404).json({error: 'User not found.'});
     }
