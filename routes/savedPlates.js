@@ -136,7 +136,7 @@ router.post('/', async (req, res) => {
             savedPlateInfo.foods,
             savedPlateInfo.servings
         );
-        res.status(200).send({result: 'redirect', url: '/savedPlates/' + newSavedPlate._id})
+        res.status(200).send({result: 'redirect', url: '/savedPlates/' + newSavedPlate._id});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
@@ -197,7 +197,7 @@ router.put('/:id', async (req, res) => {
             savedPlateInfo.foods,
             savedPlateInfo.servings
         );
-        res.status(200).json(updatedSavedPlate);
+        res.status(200).send({result: 'redirect', url: '/savedPlates/' + updatedSavedPlate._id});
     } catch (e) {
         res.status(500).json({error: e.message});
     }
