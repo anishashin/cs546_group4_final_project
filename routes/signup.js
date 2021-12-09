@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
       userInfo.password,
       userInfo.isAdmin
     );
-    res.redirect('/');
+    res.redirect('/login');
   } catch (e) {
     res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: e.message});
   }

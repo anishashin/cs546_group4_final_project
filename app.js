@@ -35,7 +35,7 @@ app.use('/comments', async (req, res, next) => {
 });
 
 app.use('/foods/add', async (req, res, next) => {
-  if(!req.session.user) {
+  if(!req.session.user || !req.session.user.isAdmin) {
     return res.redirect('/');
   } else {
     next();
@@ -43,15 +43,31 @@ app.use('/foods/add', async (req, res, next) => {
 });
 
 app.use('/foods/edit', async (req, res, next) => {
-  if(!req.session.user) {
+  if(!req.session.user || !req.session.user.isAdmin) {
     return res.redirect('/');
   } else {
     next();
   }
 });
 
-app.use('/savedPlates/edit', async (req, res, next) => {
-  if(!req.session.user) {
+app.post('/foods', async (req, res, next) => {
+  if(!req.session.user || !req.session.user.isAdmin) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.put('/foods/:id', async (req, res, next) => {
+  if(!req.session.user || !req.session.user.isAdmin) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.delete('/foods/:id', async (req, res, next) => {
+  if(!req.session.user || !req.session.user.isAdmin) {
     return res.redirect('/');
   } else {
     next();
@@ -71,6 +87,38 @@ app.use('/logout', async (req, res, next) => {
       res.redirect('/');
   } else {
       next();
+  }
+});
+
+app.use('/savedPlates/edit', async (req, res, next) => {
+  if(!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.post('/savedPlates', async (req, res, next) => {
+  if(!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.put('/savedPlates/:id', async (req, res, next) => {
+  if(!req.session.user || !req.session.user.isAdmin) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.delete('/savedPlates/:id', async (req, res, next) => {
+  if(!req.session.user || !req.session.user.isAdmin) {
+    return res.redirect('/');
+  } else {
+    next();
   }
 });
 

@@ -42,7 +42,12 @@ router.get('/edit/:id', async (req, res) => {
             }
         }
         const savedPlate = await savedPlateData.get(req.params.id);
-        res.status(200).render('edit_plate', {title: 'Edit Saved Plate', foodList: foodList, savedPlate: savedPlate});
+        res.status(200).render('edit_plate', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Saved Plate', 
+            foodList: foodList, 
+            savedPlate: savedPlate});
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
     }
