@@ -4,7 +4,7 @@
             <h1>Food Listings Page</h1>
         </div>
         <div class="col-2 text-end">
-            {{#if isAdmin}}
+            {{#if user.isAdmin}}
                 <a href="/foods/add" class="btn btn-primary">Add Food</a>
             {{/if}}
         </div>

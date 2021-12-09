@@ -80,7 +80,7 @@ let exportedMethods = {
             //no op
         }
         if(compareResult) {
-            return {authenticated: true, id: user._id, firstName: user.firstName, lastName: user.lastName, username: user.username, isAdmin: user.isAdmin, savedPlates: user.savedPlates};
+            return {authenticated: true, user: user};
         } else {
             throw new Error('Either the username or password is invalid.');
         }

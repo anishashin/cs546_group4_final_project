@@ -6,7 +6,9 @@
             <h2>Foods</h2>
         </div>
         <div class="col-2 text-end">
-            <button id="savePlateButton" type="button" class="btn btn-success">Save Plate to Profile</button>
+            {{#if authenticated}}
+                <button id="savePlateButton" type="button" class="btn btn-success">Save Plate to Profile</button>
+            {{/if}}
         </div>
     </div>
 
@@ -52,6 +54,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="hidden" id="build_userId" name="userId" value={{user._id}}>
                 <label for="title" class="visually-hidden">Title</label>
                 <input id="title" class="form-control" type="text" name="title" placeholder="Give your plate a title..." required>
                 <div id="blankTitleError"></div>

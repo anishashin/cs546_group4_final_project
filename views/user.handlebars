@@ -1,19 +1,19 @@
 <div class="container">
     <main>
-        {{#if user.firstName}}
-            {{#if user.lastName}}
-                <h1>{{user.firstName}} {{user.lastName}}</h1>
+        {{#if userInfo.firstName}}
+            {{#if userInfo.lastName}}
+                <h1>{{userInfo.firstName}} {{userInfo.lastName}}</h1>
             {{else}}
-                <h1>{{user.firstName}}</h1>
+                <h1>{{userInfo.firstName}}</h1>
             {{/if}}
         {{else}}
-            {{#if user.lastName}}
-                <h1>{{user.lastName}}</h1>
+            {{#if userInfo.lastName}}
+                <h1>{{userInfo.lastName}}</h1>
             {{/if}}
         {{/if}}
 
-        {{#if user.username}}
-            <p>@{{user.username}}</p>
+        {{#if userInfo.username}}
+            <p>@{{userInfo.username}}</p>
         {{/if}}<br>
 
         <h3>Saved Plates</h3>

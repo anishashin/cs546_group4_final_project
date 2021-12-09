@@ -5,15 +5,6 @@ const userData = data.users;
 const savedPlateData = data.savedPlates;
 const foodData = data.foods;
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const userList = await userData.getAll();
-//         res.status(200).json(userList);
-//     } catch (e) {
-//         res.status(500).json({error: e.message});
-//     }
-// });
-
 router.get('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
@@ -37,7 +28,7 @@ router.get('/:id', async (req, res) => {
             authenticated: req.session.user ? true : false,
             user: req.session.user,
             title: 'User Profile', 
-            // user: user, 
+            userInfo: user,
             savedPlateList: savedPlateList});
     } catch (e) {
         res.status(404).json({error: 'User not found.'});

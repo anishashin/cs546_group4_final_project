@@ -109,7 +109,7 @@
     });
 
     $('#submitPlateButton').on('click', function(event) {
-        const userId = '61a9b816e26e9c5ef413ef23';
+        const userId = $('#build_userId').val();
         const title = $('#title').val();
         if(!title || typeof title !== 'string' || title.trim() === '') {
             $('#blankTitleError').show();
