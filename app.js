@@ -107,7 +107,7 @@ app.post('/savedPlates', async (req, res, next) => {
 });
 
 app.put('/savedPlates/:id', async (req, res, next) => {
-  if(!req.session.user || !req.session.user.isAdmin) {
+  if(!req.session.user) {
     return res.redirect('/');
   } else {
     next();
@@ -115,7 +115,7 @@ app.put('/savedPlates/:id', async (req, res, next) => {
 });
 
 app.delete('/savedPlates/:id', async (req, res, next) => {
-  if(!req.session.user || !req.session.user.isAdmin) {
+  if(!req.session.user) {
     return res.redirect('/');
   } else {
     next();
