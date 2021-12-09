@@ -6,8 +6,10 @@
         </div>
         <div class="col-3 text-end">
             {{#if authenticated}}
-                <a href="/savedPlates/edit/{{savedPlate._id}}" class="btn btn-secondary">Edit Saved Plate</a>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSavedPlateModal">Delete Saved Plate</button>
+                {{#if isCreator}}
+                    <a href="/savedPlates/edit/{{savedPlate._id}}" class="btn btn-secondary">Edit Saved Plate</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSavedPlateModal">Delete Saved Plate</button>
+                {{/if}}
             {{/if}}
         </div>
     </div><br>

@@ -42,6 +42,9 @@ router.get('/edit/:id', async (req, res) => {
             }
         }
         const savedPlate = await savedPlateData.get(req.params.id);
+        if(req.session.user._id !== savedPlate.userId) {
+            return res.redirect('/');
+        }
         res.status(200).render('edit_plate', {
             authenticated: req.session.user ? true : false,
             user: req.session.user,
@@ -74,6 +77,7 @@ router.get('/:id', async (req, res) => {
         res.status(200).render('saved_plate', {
             authenticated: req.session.user ? true : false,
             user: req.session.user,
+            isCreator: req.session.user && req.session.user._id === savedPlate.userId ? true : false,
             title: savedPlate.title, 
             savedPlate: savedPlate});
     } catch (e) {
@@ -199,6 +203,9 @@ router.put('/:id', async (req, res) => {
     }
     try {
         const savedPlate = await savedPlateData.get(req.params.id);
+        if(req.session.user._id !== savedPlate.userId) {
+            return res.redirect('/');
+        }
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
         return;
@@ -224,6 +231,9 @@ router.delete('/:id', async (req, res) => {
     let savedPlate;
     try {
         savedPlate = await savedPlateData.get(req.params.id);
+        if(req.session.user._id !== savedPlate.userId) {
+            return res.redirect('/');
+        }
     } catch (e) {
         res.status(404).json({error: 'Saved plate not found.'});
         return;
