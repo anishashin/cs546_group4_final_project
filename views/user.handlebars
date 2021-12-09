@@ -16,7 +16,7 @@
             <p>@{{userInfo.username}}</p>
         {{/if}}<br>
 
-        <h3>Saved Plates</h3>
+        <h2>Saved Plates</h2>
         {{#if savedPlateList}}
             <div class="row row-cols-1 row-cols-sm-2 g-4">
                 {{#each savedPlateList}}
@@ -25,7 +25,7 @@
                             <div class="row g-0">
                                 <div class="col-md-5">
                                     <div class="card-body">
-                                        <h5 class="card-title"><a href="/savedPlates/{{_id}}">{{title}}</a></h5>
+                                        <h3 class="card-title"><a href="/savedPlates/{{_id}}">{{title}}</a></h3>
                                         <ul>
                                             {{#if foods}}
                                                 {{#each foods}}
