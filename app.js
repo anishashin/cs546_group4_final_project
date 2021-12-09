@@ -26,11 +26,59 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use('/home', async (req, res, next) => {
+app.use('/comments', async (req, res, next) => {
   if(!req.session.user) {
     return res.redirect('/');
   } else {
     next();
+  }
+});
+
+app.use('/foods/add', async (req, res, next) => {
+  if(!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.use('/foods/edit', async (req, res, next) => {
+  if(!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.use('/savedPlates/edit', async (req, res, next) => {
+  if(!req.session.user) {
+    return res.redirect('/');
+  } else {
+    next();
+  }
+});
+
+app.use('/login', async (req, res, next) => {
+  if(req.session.user) {
+      res.redirect('/');
+  } else {
+      next();
+  }
+});
+
+app.use('/logout', async (req, res, next) => {
+  if(!req.session.user) {
+      res.redirect('/');
+  } else {
+      next();
+  }
+});
+
+app.use('/signup', async (req, res, next) => {
+  if(req.session.user) {
+      res.redirect('/');
+  } else {
+      next();
   }
 });
 
