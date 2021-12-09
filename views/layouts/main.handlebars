@@ -11,15 +11,27 @@
         <nav id="navbar" class="navbar bg-warning">
             <div class="container-fluid">
                 <ul class="nav">
-                    
-                    <li class="nav-item"><a class="nav-link text-white" href="/"><img class="nav_icons" src="../../public/images/Home.png">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="/foods"><img class="nav_icons" src="../../public/images/Foodicon.png">Food List</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="/savedPlates">Build Your Own Plate</a></li>
+                    {{#if authenticated}}
+                        <li class="nav-item"><a class="nav-link text-white" href="/home"><img class="nav_icons" src="../../public/images/Home.png">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/foods/foods"><img class="nav_icons" src="../../public/images/Foodicon.png">Food List</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/savedPlates/savedPlates">Build Your Own Plate</a></li>
+                    {{else}}
+                        <li class="nav-item"><a class="nav-link text-white" href="/"><img class="nav_icons" src="../../public/images/Home.png">Home</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/foods"><img class="nav_icons" src="../../public/images/Foodicon.png">Food List</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/savedPlates">Build Your Own Plate</a></li>
+                    {{/if}}
                 </ul>
-                <ul class="nav justify-content-end">
-                    <li class="nav-item"><a class="nav-link text-white" href="/login"><img class="nav_icons" src="../../public/images/Login.png">Login</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="/signup"><img class="nav_icons" src="../../public/images/user.png">Sign Up</a></li>
-                </ul>
+                {{#if authenticated}}
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item"><a class="nav-link text-white" href="/users/users/{{ userId }}">User</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/logout">Log out</a></li>
+                    </ul>
+                {{else}}
+                    <ul class="nav justify-content-end">
+                        <li class="nav-item"><a class="nav-link text-white" href="/login"><img class="nav_icons" src="../../public/images/Login.png">Login</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="/signup"><img class="nav_icons" src="../../public/images/user.png">Sign Up</a></li>
+                    </ul>
+                {{/if}}
             </div>
         </nav>
         {{{body}}}
@@ -31,5 +43,6 @@
         <script src="../../public/js/search.js"></script>
         <script src="../../public/js/add_comment.js"></script>
         <script src="../../public/js/build_plate.js"></script>
+        <script src="../../public/js/edit_plate.js"></script>
     </body>
 </html>
