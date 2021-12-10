@@ -16,6 +16,7 @@
     "express-session": "^1.17.2",
     "handlebars": "^4.7.7",
     "method-override": "^3.0.0",
-    "mongodb": "^3.6.2"
+    "mongodb": "^3.6.2",
+    "xss": "^1.0.10"
   }
 }
