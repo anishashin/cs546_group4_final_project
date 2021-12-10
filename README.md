@@ -1,4 +1,5 @@
 CS-546 Group 4 Final Project
+
 Pierce Dining Hall Nutrition Calculator
 
 To install the dependencies:
