@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const userData = data.users;
 const savedPlateData = data.savedPlates;
 const foodData = data.foods;
 
 router.get('/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const commentData = data.comments;
 const foodData = data.foods;
@@ -7,6 +8,9 @@ const userData = data.users;
 
 router.post('/', async (req, res) => {
     let commentInfo = req.body;
+    commentInfo.foodId = xss(commentInfo.foodId);
+    commentInfo.userId = xss(commentInfo.userId);
+    commentInfo.text = xss(commentInfo.text);
     if(!commentInfo) {
         res.status(400).render('error', {title: 'Error', error: 'You must provide data to add a comment.'});
         return;

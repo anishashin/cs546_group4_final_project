@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const foodData = data.foods;
 const commentData = data.comments;
@@ -31,6 +32,7 @@ router.get('/add', async (req, res) => {
 });
 
 router.get('/edit/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
@@ -49,6 +51,7 @@ router.get('/edit/:id', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
@@ -78,6 +81,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.get('/json/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
@@ -92,6 +96,14 @@ router.get('/json/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     let foodInfo = req.body;
+    foodInfo.name = xss(foodInfo.name);
+    foodInfo.servingSizeNumber = xss(foodInfo.servingSizeNumber);
+    foodInfo.servingSizeUnitSingular = xss(foodInfo.servingSizeUnitSingular);
+    foodInfo.servingSizeUnitPlural = xss(foodInfo.servingSizeUnitPlural);
+    foodInfo.calories = xss(foodInfo.calories);
+    foodInfo.fat = xss(foodInfo.fat);
+    foodInfo.carbs = xss(foodInfo.carbs);
+    foodInfo.protein = xss(foodInfo.protein);
     if(!foodInfo) {
         res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'You must provide data to add a food.'});
         return;
@@ -151,11 +163,20 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     let foodInfo = req.body;
+    foodInfo.name = xss(foodInfo.name);
+    foodInfo.servingSizeNumber = xss(foodInfo.servingSizeNumber);
+    foodInfo.servingSizeUnitSingular = xss(foodInfo.servingSizeUnitSingular);
+    foodInfo.servingSizeUnitPlural = xss(foodInfo.servingSizeUnitPlural);
+    foodInfo.calories = xss(foodInfo.calories);
+    foodInfo.fat = xss(foodInfo.fat);
+    foodInfo.carbs = xss(foodInfo.carbs);
+    foodInfo.protein = xss(foodInfo.protein);
     if(!foodInfo) {
         res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'You must provide data to edit a food.'});
         return;
@@ -223,6 +244,7 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
+    req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
         res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;

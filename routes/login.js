@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const userData = data.users;
 
@@ -13,6 +14,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   let userInfo = req.body;
+  userInfo.username = xss(userInfo.username);
+  userInfo.password = xss(userInfo.password);
   if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
     res.status(400).render('login', {title: 'Login', userInfo: userInfo, error: 'Invalid username and/or password.'});
     return;

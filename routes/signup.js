@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const xss = require('xss');
 const data = require('../data');
 const userData = data.users;
 
@@ -13,6 +14,11 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   let userInfo = req.body;
+  userInfo.firstName = xss(userInfo.firstName);
+  userInfo.lastName = xss(userInfo.lastName);
+  userInfo.username = xss(userInfo.username);
+  userInfo.password = xss(userInfo.password);
+  userInfo.isAdmin = xss(userInfo.isAdmin);
   if(!userInfo.firstName || typeof userInfo.firstName !== 'string' || userInfo.firstName.trim() === '') {
     res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid first name.'});
     return;
