@@ -2,3 +2,8 @@
     width: 200px;
     height: auto;
 }
+
+.error {
+    color: red;
+    font-style: italic;
+}

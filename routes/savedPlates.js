@@ -22,13 +22,13 @@ router.get('/', async (req, res) => {
             title: 'Build Your Own Plate',
             foodList: foodList});
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.get('/edit/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
@@ -52,13 +52,13 @@ router.get('/edit/:id', async (req, res) => {
             foodList: foodList, 
             savedPlate: savedPlate});
     } catch (e) {
-        res.status(404).json({error: 'Saved plate not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Saved plate not found.'});
     }
 });
 
 router.get('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
@@ -81,7 +81,7 @@ router.get('/:id', async (req, res) => {
             title: savedPlate.title, 
             savedPlate: savedPlate});
     } catch (e) {
-        res.status(404).json({error: 'Saved plate not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Saved plate not found.'});
     }
 });
 
@@ -101,30 +101,30 @@ router.get('/json/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     let savedPlateInfo = req.body;
     if(!savedPlateInfo) {
-        res.status(400).json({error: 'You must provide data to create a saved plate.'});
+        res.status(400).render('error', {title: 'Error', error: 'You must provide data to create a saved plate.'});
         return;
     }
     if(!savedPlateInfo.userId || typeof savedPlateInfo.userId !== 'string' || savedPlateInfo.userId.trim() === '') {
-        res.status(400).json({error: 'User id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'User id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
         const user = await userData.get(savedPlateInfo.userId);
     } catch (e) {
-        res.status(400).json({error: 'No user with that id.'});
+        res.status(400).render('error', {title: 'Error', error: 'No user with that id.'});
         return;
     }
     if(!savedPlateInfo.title || typeof savedPlateInfo.title !== 'string' || savedPlateInfo.title.trim() === '') {
-        res.status(400).json({error: 'Title must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Title must be a non-empty string containing more than just spaces.'});
         return;
     }
     if(Array.isArray(savedPlateInfo.foods) === false || savedPlateInfo.foods.length === 0) {
-        res.status(400).json({error: 'Foods must be a non-empty array.'});
+        res.status(400).render('error', {title: 'Error', error: 'Foods must be a non-empty array.'});
         return;
     }
     for(let i = 0; i < savedPlateInfo.foods.length; i++) {
         if(!savedPlateInfo.foods[i] || typeof savedPlateInfo.foods[i] !== 'string' || savedPlateInfo.foods[i].trim() === '') {
-            res.status(400).json({error: 'Foods must only contain non-empty string(s) with more than just spaces.'});
+            res.status(400).render('error', {title: 'Error', error: 'Foods must only contain non-empty string(s) with more than just spaces.'});
             return;
         }
     }
@@ -133,16 +133,16 @@ router.post('/', async (req, res) => {
             let food = await foodData.get(savedPlateInfo.foods[i]);
         }
     } catch (e) {
-        res.status(400).json({error: 'No food with that id.'});
+        res.status(400).render('error', {title: 'Error', error: 'No food with that id.'});
         return;
     }
     if(Array.isArray(savedPlateInfo.servings) === false || savedPlateInfo.servings.length !== savedPlateInfo.foods.length) {
-        res.status(400).json({error: 'Servings must be an array with the same length as foods.'});
+        res.status(400).render('error', {title: 'Error', error: 'Servings must be an array with the same length as foods.'});
         return;
     }
     for(let i = 0; i < savedPlateInfo.servings.length; i++) {
         if(!savedPlateInfo.servings[i] || typeof savedPlateInfo.servings[i] !== 'number' || savedPlateInfo.servings[i] <= 0) {
-            res.status(400).json({error: 'Servings must only contain numbers greater than 0.'});
+            res.status(400).render('error', {title: 'Error', error: 'Servings must only contain numbers greater than 0.'});
             return;
         }
     }
@@ -155,31 +155,31 @@ router.post('/', async (req, res) => {
         );
         res.status(200).send({result: 'redirect', url: '/savedPlates/' + newSavedPlate._id});
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.put('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     let savedPlateInfo = req.body;
     if(!savedPlateInfo) {
-        res.status(400).json({error: 'You must provide data to edit a saved plate.'});
+        res.status(400).render('error', {title: 'Error', error: 'You must provide data to edit a saved plate.'});
         return;
     }
     if(!savedPlateInfo.title || typeof savedPlateInfo.title !== 'string' || savedPlateInfo.title.trim() === '') {
-        res.status(400).json({error: 'Title must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Title must be a non-empty string containing more than just spaces.'});
         return;
     }
     if(Array.isArray(savedPlateInfo.foods) === false || savedPlateInfo.foods.length === 0) {
-        res.status(400).json({error: 'Foods must be a non-empty array.'});
+        res.status(400).render('error', {title: 'Error', error: 'Foods must be a non-empty array.'});
         return;
     }
     for(let i = 0; i < savedPlateInfo.foods.length; i++) {
         if(!savedPlateInfo.foods[i] || typeof savedPlateInfo.foods[i] !== 'string' || savedPlateInfo.foods[i].trim() === '') {
-            res.status(400).json({error: 'Foods must only contain non-empty string(s) with more than just spaces.'});
+            res.status(400).render('error', {title: 'Error', error: 'Foods must only contain non-empty string(s) with more than just spaces.'});
             return;
         }
     }
@@ -188,16 +188,16 @@ router.put('/:id', async (req, res) => {
             let food = await foodData.get(savedPlateInfo.foods[i]);
         }
     } catch (e) {
-        res.status(400).json({error: 'No food with that id.'});
+        res.status(400).render('error', {title: 'Error', error: 'No food with that id.'});
         return;
     }
     if(Array.isArray(savedPlateInfo.servings) === false || savedPlateInfo.servings.length !== savedPlateInfo.foods.length) {
-        res.status(400).json({error: 'Servings must be an array with the same length as foods.'});
+        res.status(400).render('error', {title: 'Error', error: 'Servings must be an array with the same length as foods.'});
         return;
     }
     for(let i = 0; i < savedPlateInfo.servings.length; i++) {
         if(!savedPlateInfo.servings[i] || typeof savedPlateInfo.servings[i] !== 'number' || savedPlateInfo.servings[i] <= 0) {
-            res.status(400).json({error: 'Servings must only contain numbers greater than 0.'});
+            res.status(400).render('error', {title: 'Error', error: 'Servings must only contain numbers greater than 0.'});
             return;
         }
     }
@@ -207,7 +207,7 @@ router.put('/:id', async (req, res) => {
             return res.redirect('/');
         }
     } catch (e) {
-        res.status(404).json({error: 'Saved plate not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Saved plate not found.'});
         return;
     }
     try {
@@ -219,13 +219,13 @@ router.put('/:id', async (req, res) => {
         );
         res.status(200).send({result: 'redirect', url: '/savedPlates/' + updatedSavedPlate._id});
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.delete('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     let savedPlate;
@@ -235,14 +235,14 @@ router.delete('/:id', async (req, res) => {
             return res.redirect('/');
         }
     } catch (e) {
-        res.status(404).json({error: 'Saved plate not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Saved plate not found.'});
         return;
     }
     try {
         const result = await savedPlateData.remove(req.params.id);
         res.redirect('/users/' + savedPlate.userId);
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 

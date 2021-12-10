@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
             title: 'Food List',
             foodList: foodList});
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
@@ -26,13 +26,13 @@ router.get('/add', async (req, res) => {
             title: 'Add Food'
         });
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.get('/edit/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
@@ -44,13 +44,13 @@ router.get('/edit/:id', async (req, res) => {
             foodInfo: foodInfo
         });
     } catch (e) {
-        res.status(404).json({error: 'Food not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
     }
 });
 
 router.get('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
@@ -73,7 +73,7 @@ router.get('/:id', async (req, res) => {
             food: food, 
             commentList: commentList});
     } catch (e) {
-        res.status(404).json({error: 'Food not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
     }
 });
 
@@ -146,13 +146,13 @@ router.post('/', async (req, res) => {
         );
         res.redirect('/foods/' + newFood._id);
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.put('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     let foodInfo = req.body;
@@ -201,7 +201,7 @@ router.put('/:id', async (req, res) => {
     try {
         const food = await foodData.get(req.params.id);
     } catch (e) {
-        res.status(404).json({error: 'Food not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
         return;
     }
     try {
@@ -218,26 +218,26 @@ router.put('/:id', async (req, res) => {
         );
         res.redirect('/foods/' + req.params.id);
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 
 router.delete('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
         const food = await foodData.get(req.params.id);
     } catch (e) {
-        res.status(404).json({error: 'Food not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
         return;
     }
     try {
         const result = await foodData.remove(req.params.id);
         res.redirect('/foods');
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 

@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
             title: 'Home'
         });
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).render('error', {title: 'Error', error: e.message});
     }
 });
 

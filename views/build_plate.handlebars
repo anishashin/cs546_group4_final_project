@@ -15,7 +15,7 @@
     <div class="row">
         <div class="col">
             <div id="foodDiv" class="form-group"></div>
-            <div id="invalidInputsError"></div><br>
+            <div id="invalidInputsError" class="error"></div><br>
             <div class="d-grid gap-2">
                 <button id="addFoodButton" class="btn btn-outline-primary" type="button">Add Food</button>
             </div>
@@ -57,7 +57,7 @@
                 <input type="hidden" id="build_userId" name="userId" value="{{user._id}}">
                 <label for="title" class="visually-hidden">Title</label>
                 <input id="title" class="form-control" type="text" name="title" placeholder="Give your plate a title..." required>
-                <div id="blankTitleError"></div>
+                <div id="blankTitleError" class="error"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

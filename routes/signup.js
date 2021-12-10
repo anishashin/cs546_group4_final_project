@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
   try {
     res.status(200).render('signup', {title: 'Sign Up'});
   } catch (e) {
-    res.status(500).json({error: e.message});
+    res.status(500).render('error', {title: 'Error', error: e.message});
   }
 });
 

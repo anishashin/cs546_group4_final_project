@@ -7,7 +7,7 @@ const foodData = data.foods;
 
 router.get('/:id', async (req, res) => {
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).json({error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
         return;
     }
     try {
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
             userInfo: user,
             savedPlateList: savedPlateList});
     } catch (e) {
-        res.status(404).json({error: 'User not found.'});
+        res.status(404).render('error', {title: 'Error', error: 'User not found.'});
     }
 });
 
