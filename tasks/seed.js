@@ -9,7 +9,8 @@ const main = async () => {
     const db = await dbConnection();
     await db.dropDatabase();
 
-    const anisha = await users.create('Anisha', 'Shin', 'anishashin', 'password1', true);
+    const admin = await users.create('Stevens', 'Dining', 'admin', 'password', true);
+    const anisha = await users.create('Anisha', 'Shin', 'anishashin', 'password1', false);
     const kushal = await users.create('Kushal', 'Patel', 'kushalpatel', 'password2', false);
     const lasya = await users.create('Lasya', 'Josyula', 'lasyajosyula', 'password3', false);
     const peixin = await users.create('Peixin', 'Dai', 'peixindai', 'password4', false);
