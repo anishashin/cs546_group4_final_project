@@ -13,9 +13,15 @@ router.get('/', async (req, res) => {
             authenticated: req.session.user ? true : false,
             user: req.session.user,
             title: 'Food List',
-            foodList: foodList});
+            foodList: foodList
+        });
     } catch (e) {
-        res.status(500).render('error', {title: 'Error', error: e.message});
+        res.status(500).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: e.message
+        });
     }
 });
 
@@ -27,14 +33,24 @@ router.get('/add', async (req, res) => {
             title: 'Add Food'
         });
     } catch (e) {
-        res.status(500).render('error', {title: 'Error', error: e.message});
+        res.status(500).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: e.message
+        });
     }
 });
 
 router.get('/edit/:id', async (req, res) => {
     req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Id must be a non-empty string containing more than just spaces.'
+        });
         return;
     }
     try {
@@ -46,14 +62,24 @@ router.get('/edit/:id', async (req, res) => {
             foodInfo: foodInfo
         });
     } catch (e) {
-        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
+        res.status(404).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Food not found.'
+        });
     }
 });
 
 router.get('/:id', async (req, res) => {
     req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Id must be a non-empty string containing more than just spaces.'
+        });
         return;
     }
     try {
@@ -74,9 +100,15 @@ router.get('/:id', async (req, res) => {
             user: req.session.user,
             title: food.name, 
             food: food, 
-            commentList: commentList});
+            commentList: commentList
+        });
     } catch (e) {
-        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
+        res.status(404).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Food not found.'
+        });
     }
 });
 
@@ -105,7 +137,13 @@ router.post('/', async (req, res) => {
     foodInfo.carbs = xss(foodInfo.carbs);
     foodInfo.protein = xss(foodInfo.protein);
     if(!foodInfo) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'You must provide data to add a food.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'You must provide data to add a food.'
+        });
         return;
     }
     foodInfo.parsedServingSizeNumber = parseFloat(foodInfo.servingSizeNumber);
@@ -114,35 +152,83 @@ router.post('/', async (req, res) => {
     foodInfo.parsedCarbs = parseFloat(foodInfo.carbs);
     foodInfo.parsedProtein = parseFloat(foodInfo.protein);
     if(!foodInfo.name || typeof foodInfo.name !== 'string' || foodInfo.name.trim() === '') {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Invalid food name.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid food name.'
+        });
         return;
     }
     if(!foodInfo.parsedServingSizeNumber || typeof foodInfo.parsedServingSizeNumber !== 'number' || foodInfo.parsedServingSizeNumber <= 0) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Serving size (number) must be a number greater than 0.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Serving size (number) must be a number greater than 0.'
+        });
         return;
     }
     if(!foodInfo.servingSizeUnitSingular || typeof foodInfo.servingSizeUnitSingular !== 'string' || foodInfo.servingSizeUnitSingular.trim() === '') {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Invalid serving size unit (singular).'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid serving size unit (singular).'
+        });
         return;
     }
     if(!foodInfo.servingSizeUnitPlural || typeof foodInfo.servingSizeUnitPlural !== 'string' || foodInfo.servingSizeUnitPlural.trim() === '') {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Invalid serving size unit (plural).'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid serving size unit (plural).'
+        });
         return;
     }
     if(typeof foodInfo.parsedCalories !== 'number' || isNaN(foodInfo.parsedCalories) || foodInfo.parsedCalories < 0) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Calories must be a number greater than or equal to 0.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Calories must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedFat !== 'number' || isNaN(foodInfo.parsedFat) || foodInfo.parsedFat < 0) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Fat must be a number greater than or equal to 0.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Fat must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedCarbs !== 'number' || isNaN(foodInfo.parsedCarbs) || foodInfo.parsedCarbs < 0) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Carbohydrates must be a number greater than or equal to 0.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Carbohydrates must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedProtein !== 'number' || isNaN(foodInfo.parsedProtein) || foodInfo.parsedProtein < 0) {
-        res.status(400).render('add_food', {title: 'Add Food', foodInfo: foodInfo, error: 'Protein must be a number greater than or equal to 0.'});
+        res.status(400).render('add_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Add Food', 
+            foodInfo: foodInfo, 
+            error: 'Protein must be a number greater than or equal to 0.'
+        });
         return;
     }
     try {
@@ -158,14 +244,24 @@ router.post('/', async (req, res) => {
         );
         res.redirect('/foods/' + newFood._id);
     } catch (e) {
-        res.status(500).render('error', {title: 'Error', error: e.message});
+        res.status(500).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: e.message
+        });
     }
 });
 
 router.put('/:id', async (req, res) => {
     req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Id must be a non-empty string containing more than just spaces.'
+        });
         return;
     }
     let foodInfo = req.body;
@@ -178,7 +274,13 @@ router.put('/:id', async (req, res) => {
     foodInfo.carbs = xss(foodInfo.carbs);
     foodInfo.protein = xss(foodInfo.protein);
     if(!foodInfo) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'You must provide data to edit a food.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food',
+            foodInfo: foodInfo,
+            error: 'You must provide data to edit a food.'
+        });
         return;
     }
     foodInfo._id = req.params.id;
@@ -188,41 +290,94 @@ router.put('/:id', async (req, res) => {
     foodInfo.parsedCarbs = parseFloat(foodInfo.carbs);
     foodInfo.parsedProtein = parseFloat(foodInfo.protein);
     if(!foodInfo.name || typeof foodInfo.name !== 'string' || foodInfo.name.trim() === '') {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Invalid food name.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid food name.'
+        });
         return;
     }
     if(!foodInfo.parsedServingSizeNumber || typeof foodInfo.parsedServingSizeNumber !== 'number' || foodInfo.parsedServingSizeNumber <= 0) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Serving size (number) must be a number greater than 0.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Serving size (number) must be a number greater than 0.'
+        });
         return;
     }
     if(!foodInfo.servingSizeUnitSingular || typeof foodInfo.servingSizeUnitSingular !== 'string' || foodInfo.servingSizeUnitSingular.trim() === '') {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Invalid serving size unit (singular).'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid serving size unit (singular).'
+        });
         return;
     }
     if(!foodInfo.servingSizeUnitPlural || typeof foodInfo.servingSizeUnitPlural !== 'string' || foodInfo.servingSizeUnitPlural.trim() === '') {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Invalid serving size unit (plural).'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Invalid serving size unit (plural).'
+        });
         return;
     }
     if(typeof foodInfo.parsedCalories !== 'number' || isNaN(foodInfo.parsedCalories) || foodInfo.parsedCalories < 0) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Calories must be a number greater than or equal to 0.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Calories must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedFat !== 'number' || isNaN(foodInfo.parsedFat) || foodInfo.parsedFat < 0) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Fat must be a number greater than or equal to 0.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Fat must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedCarbs !== 'number' || isNaN(foodInfo.parsedCarbs) || foodInfo.parsedCarbs < 0) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Carbohydrates must be a number greater than or equal to 0.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Carbohydrates must be a number greater than or equal to 0.'
+        });
         return;
     }
     if(typeof foodInfo.parsedProtein !== 'number' || isNaN(foodInfo.parsedProtein) || foodInfo.parsedProtein < 0) {
-        res.status(400).render('edit_food', {title: 'Edit Food', foodInfo: foodInfo, error: 'Protein must be a number greater than or equal to 0.'});
+        res.status(400).render('edit_food', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Edit Food', 
+            foodInfo: foodInfo, 
+            error: 'Protein must be a number greater than or equal to 0.'
+        });
         return;
     }
     try {
         const food = await foodData.get(req.params.id);
     } catch (e) {
-        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
+        res.status(404).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Food not found.'
+        });
         return;
     }
     try {
@@ -239,27 +394,47 @@ router.put('/:id', async (req, res) => {
         );
         res.redirect('/foods/' + req.params.id);
     } catch (e) {
-        res.status(500).render('error', {title: 'Error', error: e.message});
+        res.status(500).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: e.message
+        });
     }
 });
 
 router.delete('/:id', async (req, res) => {
     req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Id must be a non-empty string containing more than just spaces.'
+        });
         return;
     }
     try {
         const food = await foodData.get(req.params.id);
     } catch (e) {
-        res.status(404).render('error', {title: 'Error', error: 'Food not found.'});
+        res.status(404).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Food not found.'
+        });
         return;
     }
     try {
         const result = await foodData.remove(req.params.id);
         res.redirect('/foods');
     } catch (e) {
-        res.status(500).render('error', {title: 'Error', error: e.message});
+        res.status(500).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: e.message
+        });
     }
 });
 

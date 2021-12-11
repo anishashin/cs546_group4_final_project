@@ -6,9 +6,18 @@ const userData = data.users;
 
 router.get('/', async (req, res) => {
   try {
-    res.status(200).render('signup', {title: 'Sign Up'});
+    res.status(200).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up'
+    });
   } catch (e) {
-    res.status(500).render('error', {title: 'Error', error: e.message});
+    res.status(500).render('error', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Error', 
+      error: e.message
+    });
   }
 });
 
@@ -20,19 +29,43 @@ router.post('/', async (req, res) => {
   userInfo.password = xss(userInfo.password);
   userInfo.isAdmin = xss(userInfo.isAdmin);
   if(!userInfo.firstName || typeof userInfo.firstName !== 'string' || userInfo.firstName.trim() === '') {
-    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid first name.'});
+    res.status(400).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up', 
+      userInfo: userInfo, 
+      error: 'Invalid first name.'
+    });
     return;
   }
   if(!userInfo.lastName || typeof userInfo.lastName !== 'string' || userInfo.lastName.trim() === '') {
-    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid last name.'});
+    res.status(400).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up', 
+      userInfo: userInfo, 
+      error: 'Invalid last name.'
+    });
     return;
   }
   if(!userInfo.username || typeof userInfo.username !== 'string' || !userInfo.username.match(/^[a-zA-Z0-9]{4,}$/)) {
-    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid username.'});
+    res.status(400).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up', 
+      userInfo: userInfo, 
+      error: 'Invalid username.'
+    });
     return;
   }
   if(!userInfo.password || typeof userInfo.password !== 'string' || !userInfo.password.match(/^[^\s]{6,}$/)) {
-    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: 'Invalid password.'});
+    res.status(400).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up', 
+      userInfo: userInfo, 
+      error: 'Invalid password.'
+    });
     return;
   }
   if(userInfo.isAdmin === 'true') {
@@ -51,7 +84,13 @@ router.post('/', async (req, res) => {
     );
     res.redirect('/login');
   } catch (e) {
-    res.status(400).render('signup', {title: 'Sign Up', userInfo: userInfo, error: e.message});
+    res.status(400).render('signup', {
+      authenticated: req.session.user ? true : false,
+      user: req.session.user,
+      title: 'Sign Up', 
+      userInfo: userInfo, 
+      error: e.message
+    });
   }
 });
 

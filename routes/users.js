@@ -9,7 +9,12 @@ const foodData = data.foods;
 router.get('/:id', async (req, res) => {
     req.params.id = xss(req.params.id);
     if(!req.params.id || typeof req.params.id !== 'string' || req.params.id.trim() === '') {
-        res.status(400).render('error', {title: 'Error', error: 'Id must be a non-empty string containing more than just spaces.'});
+        res.status(400).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'Id must be a non-empty string containing more than just spaces.'
+        });
         return;
     }
     try {
@@ -31,9 +36,15 @@ router.get('/:id', async (req, res) => {
             user: req.session.user,
             title: 'User Profile', 
             userInfo: user,
-            savedPlateList: savedPlateList});
+            savedPlateList: savedPlateList
+        });
     } catch (e) {
-        res.status(404).render('error', {title: 'Error', error: 'User not found.'});
+        res.status(404).render('error', {
+            authenticated: req.session.user ? true : false,
+            user: req.session.user,
+            title: 'Error', 
+            error: 'User not found.'
+        });
     }
 });
 
