@@ -225,7 +225,7 @@ router.post('/', async (req, res) => {
             });
             return;
         }
-        savedPlateInfo.servings[i] = xss(savedPlateInfo.servings[i]);
+        savedPlateInfo.servings[i] = parseFloat(xss(savedPlateInfo.servings[i]));
     }
     try {
         const newSavedPlate = await savedPlateData.create(
@@ -329,7 +329,7 @@ router.put('/:id', async (req, res) => {
             });
             return;
         }
-        savedPlateInfo.servings[i] = xss(savedPlateInfo.servings[i]);
+        savedPlateInfo.servings[i] = parseFloat(xss(savedPlateInfo.servings[i]));
     }
     try {
         const savedPlate = await savedPlateData.get(req.params.id);
