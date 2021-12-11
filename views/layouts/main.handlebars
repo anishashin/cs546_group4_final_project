@@ -7,21 +7,21 @@
         <link rel="stylesheet" href="../../public/css/main.css">
     </head>
     <body>
-        <img src="../../public/images/pierce.png" class="img-fluid" alt="Pierce Dining Hall">
-        <nav class="navbar">
+        <img id="pierceImage" src="../../public/images/pierce.png" class="img-fluid" alt="Pierce Dining Hall">
+        <nav id="navbar" class="navbar">
             <div class="container-fluid">
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/foods">Food List</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/savedPlates">Build Your Own Plate</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/"><img class="nav_icons" src="../../public/images/Home.png" alt="Home Icon">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/foods"><img class="nav_icons" src="../../public/images/Foodicon.png" alt="Food List Icon">Food List</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/savedPlates"><img class="nav_icons" src="../../public/images/Plate.png" alt="Build Your Own Plate Icon">Build Your Own Plate</a></li>
                 </ul>
                 <ul class="nav justify-content-end">
                     {{#if authenticated}}
-                        <li class="nav-item"><a class="nav-link" href="/users/{{user._id}}">User Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/users/{{user._id}}"><img class="nav_icons" src="../../public/images/user.png" alt="User Profile Icon">User Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/logout"><img class="nav_icons" src="../../public/images/Login.png" alt="Logout Icon">Logout</a></li>
                     {{else}}
-                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login"><img class="nav_icons" src="../../public/images/Login.png" alt="Login Icon">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/signup"><img class="nav_icons" src="../../public/images/user.png" alt="Sign Up Icon">Sign Up</a></li>
                     {{/if}}
                 </ul>
             </div>
