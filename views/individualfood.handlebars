@@ -1,13 +1,15 @@
 <div class="container">
-    <a href="/foods"><img  src="../public/images/Caret_left.png" /></a>
+    <a class="nav-link" href="/foods"><img class="nav_icons" src="../../public/images/Caret_left.png" alt="User Profile Icon"></a>
     <h1 class="text-center">{{food.name}}</h1>
 
     <main>
         
         <div class="text-center">
-            <img src="../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
-            <a href="/foods/edit/{{food._id}}" class="btn btn-secondary">Edit Food</a>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
+            <img src="../../public/images/food.png" class="img-thumbnail" alt="{{food.name}}"><br><br>
+            {{#if user.isAdmin}}
+                <a href="/foods/edit/{{food._id}}" class="btn btn-secondary">Edit Food</a>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFoodModal">Delete Food</button>
+            {{/if}}
         </div>
 
         <table class="table table-bordered caption-top">
@@ -38,31 +40,33 @@
 
         <div class="row">
             <div class="col-10">
-                <h3>Comments</h3>
+                <h2>Comments</h2>
             </div>
             <div class="col-2 text-end">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+                {{#if authenticated}}
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommentModal">Add Comment</button>
+                {{/if}}
             </div>
         </div>
 
-        {{#if commentList}}
-            <br>
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4" id="commentList">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4" id="commentList">
+            {{#if commentList}}
+                <br>
                 {{#each commentList}}
                     {{> comment }}
                 {{/each}}
-            </div>
-        {{else}}
-            <p>There are currently no comments for this food.</p>
-        {{/if}}
+            {{else}}
+                <p id="noComments">No comments.</p>
+            {{/if}}
+        </div>
     </main>
 </div>
 
-<div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteFoodLabel" aria-hidden="true">
+<div class="modal fade" id="deleteFoodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteFoodLabel">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteFoodLabel">Delete Food</h5>
+                <h3 class="modal-title" id="deleteFoodLabel">Delete Food</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -78,20 +82,20 @@
     </div>
 </div>
 
-<div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel" aria-hidden="true">
+<div class="modal fade" id="addCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addCommentLabel">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/comments" id="addCommentForm">
+            <form id="addCommentForm">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addCommentLabel">Add Comment</h5>
+                    <h3 class="modal-title" id="addCommentLabel">Add Comment</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <label for="text" class="visually-hidden">Text</label>
-                    <input type="hidden" id="foodId" name="foodId" value={{food._id}}>
-                    <input type="hidden" id="userId" name="userId">
+                    <input type="hidden" id="foodId" name="foodId" value="{{food._id}}">
+                    <input type="hidden" id="userId" name="userId" value="{{user._id}}">
                     <textarea id="text" class="form-control" name="text" placeholder="Type your comment here." style="height: 100px" required></textarea>
-                    <div id="error"></div>
+                    <div id="error" class="error"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
