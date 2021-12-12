@@ -43,3 +43,18 @@
 #instructions {
     list-style-type: none;
 }
+
+
+#carousel-control-left{
+    margin-left: 3%;
+}
+
+#carousel-control-right{
+    margin-right: 3%;
+}
+.container{
+    margin-top: 40px;
+    border-radius:30px;
+    padding:30px;
+    background-color: #eed1d5;
+}
