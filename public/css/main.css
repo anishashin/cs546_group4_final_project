@@ -1,53 +1,64 @@
-
 .img-thumbnail {
     width: 200px;
     height: auto;
 }
 
-.nav_icons{
+.error {
+    color: red;
+    font-style: italic;
+}
+
+#pierceImage {
+    width: 100%;
+}
+
+.nav_icons {
     margin-right: 5pt;
 }
 
-#navbar{
+#navbar {
+    background-color: #a32638;
     margin-bottom: 20px;
 }
 
-.carousel-inner img {
-    display: block;
-    margin: auto;
-    width: 95%;
-    max-height: 800px;
+.nav-link {
+    color: white;
 }
 
-.carousel-caption{
-    background-color: rgba(189, 197, 197, 0.342);
-}
-
-#demo{
-    display: block;
-    margin: auto;
-    background-color:rgb(255, 255, 246);
-    margin-top: -20px;
-}
-
-#carousel-control-left{
-    margin-left: 1%;
-}
-
-#carousel-control-right{
-    margin-right: 1%;
-}
-
-.card-img-top{
+.card-img-top {
     display: block;
     margin: auto;
     width: 80%;
     height: 80%;
 }
 
+.carousel-caption {
+    background-color: #a32638;
+}
+
+.carousel img {
+    margin: auto;
+}
+
+#instructions {
+    list-style-type: none;
+}
+
+
+#carousel-control-left{
+    margin-left: 3%;
+}
+
+#carousel-control-right{
+    margin-right: 3%;
+}
 .container{
     margin-top: 40px;
     border-radius:30px;
     padding:30px;
-    background-color: #FDFBF5;
+    background-color: #d0d4d2;
+}
+
+.card{
+    background-color: #f4f6f5;
 }
